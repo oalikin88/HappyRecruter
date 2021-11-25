@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -16,9 +15,13 @@ public class IbsStaff {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private int id;
 
     private String fio;
     private String position;
     private String department;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ibs_staff_id")
+    private List<Project> project;
 }
