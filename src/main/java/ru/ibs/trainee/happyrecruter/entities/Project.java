@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table
@@ -17,39 +18,19 @@ public class Project {
 
     @Id
     @GeneratedValue
-    private int id;
-    @OneToOne
-    private IbsStaff ibsStaff;
-    @OneToOne
-    private ProjectStatus projectStatusName;
-    @OneToOne
-    private Location idLocation;
-    @OneToOne
-    private Type1 idType1;
-    @OneToOne
-    private Type2 idType2;
-    @OneToOne
-    private Type3 idType3;
-    @OneToOne
-    private Type4 idType4;
-    @OneToOne
-    private Stage idStage;
-    @OneToOne
-    private Overtime idOvertime;
-    @OneToOne
-    private Methodology idMethodology;
+    private Long id;
 
-    private LocalDateTime localDateTime;
     private String companyName;
     private String projectName;
-    private String subjectArea;
+    private String location;
     private String functionalArea;
     private String description;
     private String projectTasks;
-    private LocalDate localDate;
+    private LocalDateTime dateCreate;
+    private LocalDate dateCloseProject;
     private int stakeholders;
     private LocalDate dateProjectEnter;
-    private String procedureEnter;
+    private String procedureEnteringStaff;
     private boolean isDocumentated;
     private boolean isWorkHome;
     private String technologies;
@@ -57,13 +38,45 @@ public class Project {
     private boolean isProductProject;
     private boolean hasTesters;
     private boolean hasTechAuthor;
-    private int analiticsNeeds;
-    private int analiticsHired;
-    private int developersNeeds;
-    private int developersHired;
-    private int testersNeeds;
-    private int testersHired;
-    private int techAuthorsNeeds;
-    private int techAuthorsHired;
-
+    private boolean hasDesigners;
+    private boolean hasAnotherSpecialists;
+    @ManyToOne
+    @JoinColumn(name = "id_type1")
+    private Type1 idType1;
+    @ManyToOne
+    @JoinColumn(name = "id_type2")
+    private Type2 idType2;
+    @ManyToOne
+    @JoinColumn(name = "id_type3")
+    private Type3 idType3;
+    @ManyToOne
+    @JoinColumn(name = "id_type4")
+    private Type4 idType4;
+    @ManyToOne
+    @JoinColumn(name = "id_stage")
+    private Stage idStage;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Overtime idOvertime;
+    @ManyToOne
+    @JoinColumn(name = "id_methodology")
+    private Methodology idMethodology;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "creator_id")
+    private Person person;
+    @OneToOne(cascade = CascadeType.ALL)
+    private SubjectArea subjectArea;
+    @OneToOne(cascade = CascadeType.ALL)
+    private MemberTeam memberTeam1;
+    @OneToOne(cascade = CascadeType.ALL)
+    private MemberTeam memberTeam2;
+    @OneToOne(cascade = CascadeType.ALL)
+    private MemberTeam memberTeam3;
+    @OneToOne(cascade = CascadeType.ALL)
+    private MemberTeam memberTeam4;
+    @OneToOne(cascade = CascadeType.ALL)
+    private MemberTeam memberTeam5;
+    @OneToOne(cascade = CascadeType.ALL)
+    private MemberTeam memberTeam6;
+    @OneToOne(cascade = CascadeType.ALL)
+    private ProjectStatus projectStatus;
 }

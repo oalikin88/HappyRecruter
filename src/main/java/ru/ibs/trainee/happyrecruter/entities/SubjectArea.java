@@ -12,12 +12,11 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Location {
+public class SubjectArea {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String locationName;
-    private String locationAddress;
+    private String name;
 }

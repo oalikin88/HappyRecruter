@@ -5,23 +5,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class IbsStaff {
+public class StaffList {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String fio;
-    private String position;
-    private String department;
+    private String staffName;
 
 
-    @OneToOne
-    private Project project;
 }
