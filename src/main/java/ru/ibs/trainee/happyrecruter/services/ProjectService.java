@@ -10,7 +10,9 @@ import ru.ibs.trainee.happyrecruter.repositories.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ProjectService {
@@ -26,6 +28,14 @@ public class ProjectService {
     Type3Repository type3Repository;
     @Autowired
     Type4Repository type4Repository;
+    @Autowired
+    MethodologyRepository methodologyRepository;
+    @Autowired
+    StageRepository stageRepository;
+    @Autowired
+    OvertimeRepository overtimeRepository;
+    @Autowired
+    SubjectAreaRepository subjectAreaRepository;
 
 
 
@@ -36,9 +46,9 @@ public class ProjectService {
                                   String projectTasks, LocalDate dateCloseProject,
                                   int stakeholders, String procedureEnteringStaff,
                                   boolean isDocumentated, boolean isWorkHome, String technologies,
-                                  boolean isDelegated, boolean isProductProject, boolean hasTesters,
-                                  boolean hasTechAuthor, boolean hasDesigners, boolean hasAnotherSpecialists,
-                                  String stageDescr, String overtimeDescr, String methodologyDescr, String subjectArea,
+                                  boolean isDelegated, boolean isProductProject, boolean hasDesigners,
+                                  boolean hasAnotherSpecialists, String stageIn, String overtimeIn,
+                                  String methodologyIn, String subjectArea,
                                   String type1In, String type2In, String type3In, String type4In,
                                   float countNeeds1, float countHired1, float countNeeds2, float countHired2, float countNeeds3,
                                   float countHired3, float countNeeds4, float countHired4, float countNeeds5, float countHired5,
@@ -48,10 +58,13 @@ public class ProjectService {
                                   LocalDate dateStartProject5,  LocalDate dateStartProject6) {
 
         Project project = new Project();
-        SubjectArea subjectArea1 = new SubjectArea(null, subjectArea);
-        Overtime overtime = new Overtime(null, overtimeDescr);
-        Stage stage = new Stage(null, stageDescr);
-        Methodology methodology = new Methodology(null, methodologyDescr);
+        SubjectArea subjectAreaIn = subjectAreaRepository.findByNameIs(subjectArea);
+        Overtime overtime = overtimeRepository.findByOvertimeNameIs(overtimeIn);
+        Stage stage = stageRepository.findByStageNameIs(stageIn);
+
+
+
+        Methodology methodology = methodologyRepository.findByMethodologyNameIs(methodologyIn);
 
         Type1 type1 = type1Repository.findByTypeIs(type1In);
         Type2 type2 = type2Repository.findByTypeIs(type2In);
@@ -75,6 +88,9 @@ public class ProjectService {
         techwr.setStaffList(staffListRepository.findStaffListByStaffNameIs("techwr"));
 
 
+
+
+        project.setSubjectArea(subjectAreaIn);
         project.setCompanyName(companyName);
         project.setProjectName(projectName);
         project.setFunctionalArea(functionalArea);
@@ -92,11 +108,8 @@ public class ProjectService {
         project.setDelegated(isDelegated);
         project.setIdMethodology(methodology);
         project.setProductProject(isProductProject);
-        project.setHasTesters(hasTesters);
-        project.setHasTechAuthor(hasTechAuthor);
         project.setHasDesigners(hasDesigners);
         project.setHasAnotherSpecialists(hasAnotherSpecialists);
-        project.setSubjectArea(subjectArea1);
         project.setIdType1(type1);
         project.setIdType2(type2);
         project.setIdType3(type3);
@@ -117,14 +130,19 @@ public class ProjectService {
 
     public Object editProject(Long idEditProject, String companyName, String projectName,
                               String location, String functionalArea, String description,
-                              String projectTasks, LocalDateTime dateCreate, LocalDate dateCloseProject,
-                              int stakeholders, LocalDate dateProjectEnter, String procedureEnteringStaff,
+                              String projectTasks, LocalDate dateCloseProject,
+                              int stakeholders, String procedureEnteringStaff,
                               boolean isDocumentated, boolean isWorkHome, String technologies,
-                              boolean isDelegated, boolean isProductProject, boolean hasTesters,
-                              boolean hasTechAuthor, boolean hasDesigners, boolean hasAnotherSpecialists,
-                              Type1 idType1, Type2 idType2, Type3 idType3, Type4 idType4, Stage idStage,
-                              Overtime idOvertime, Methodology idMethodology, SubjectArea subjectArea,
-                              MemberTeam memberTeam, ProjectStatus projectStatus) {
+                              boolean isDelegated, boolean isProductProject, boolean hasDesigners,
+                              boolean hasAnotherSpecialists, String stageIn, String overtimeIn,
+                              String methodologyIn, String subjectArea,
+                              String type1In, String type2In, String type3In, String type4In,
+                              float countNeeds1, float countHired1, float countNeeds2, float countHired2, float countNeeds3,
+                              float countHired3, float countNeeds4, float countHired4, float countNeeds5, float countHired5,
+                              float countNeeds6, float countHired6,
+                              LocalDate dateStartProject1, LocalDate dateStartProject2,
+                              LocalDate dateStartProject3, LocalDate dateStartProject4,
+                              LocalDate dateStartProject5,  LocalDate dateStartProject6) {
         Project newProject;
         if(!projectRepository.findById(idEditProject).isEmpty()) {
             newProject = projectRepository.findById(idEditProject).get();
@@ -134,21 +152,17 @@ public class ProjectService {
             newProject.setFunctionalArea(functionalArea);
             newProject.setDescription(description);
             newProject.setProjectTasks(projectTasks);
-            newProject.setDateCreate(dateCreate);
             newProject.setDateCloseProject(dateCloseProject);
             newProject.setStakeholders(stakeholders);
-            newProject.setDateProjectEnter(dateProjectEnter);
             newProject.setProcedureEnteringStaff(procedureEnteringStaff);
             newProject.setDocumentated(isDocumentated);
             newProject.setWorkHome(isWorkHome);
             newProject.setTechnologies(technologies);
             newProject.setDelegated(isDelegated);
             newProject.setProductProject(isProductProject);
-            newProject.setHasTesters(hasTesters);
-            newProject.setHasTechAuthor(hasTechAuthor);
             newProject.setHasDesigners(hasDesigners);
             newProject.setHasAnotherSpecialists(hasAnotherSpecialists);
-            newProject.setIdType1(idType1);
+       /*     newProject.setIdType1(idType1);
             newProject.setIdType2(idType2);
             newProject.setIdType3(idType3);
             newProject.setIdType4(idType4);
@@ -156,7 +170,7 @@ public class ProjectService {
             newProject.setIdMethodology(idMethodology);
             newProject.setSubjectArea(subjectArea);
             newProject.setMemberTeam1(memberTeam);
-            newProject.setProjectStatus(projectStatus);
+            newProject.setProjectStatus(projectStatus);*/
 
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

@@ -23,21 +23,43 @@ public class HappyRecruterApplication {
         Type2Repository type2Repository = context.getBean(Type2Repository.class);
         Type3Repository type3Repository = context.getBean(Type3Repository.class);
         Type4Repository type4Repository = context.getBean(Type4Repository.class);
+        SubjectAreaRepository subjectAreaRepository = context.getBean(SubjectAreaRepository.class);
 
-/*        Type1 type1 = new Type1(null, "Фикс");
+        SubjectArea medicine = new SubjectArea(null, "Медицина");
+        SubjectArea education = new SubjectArea(null, "Образование");
+        SubjectArea construction = new SubjectArea(null, "Строительство");
+        SubjectArea trade = new SubjectArea(null, "Торговля");
+        SubjectArea economics = new SubjectArea(null, "Экономика");
+        SubjectArea management = new SubjectArea(null, "Управление");
+        SubjectArea gkh = new SubjectArea(null, "ЖКХ");
+        SubjectArea banking = new SubjectArea(null, "Банковская сфера");
+        SubjectArea oilIndustry = new SubjectArea(null, "Нефтянная отрасль");
+
+        subjectAreaRepository.save(medicine);
+        subjectAreaRepository.save(education);
+        subjectAreaRepository.save(construction);
+        subjectAreaRepository.save(trade);
+        subjectAreaRepository.save(economics);
+        subjectAreaRepository.save(management);
+        subjectAreaRepository.save(gkh);
+        subjectAreaRepository.save(banking);
+        subjectAreaRepository.save(oilIndustry);
+
+
+        /*Type1 type1 = new Type1(null, "Фикс");
         Type2 type2 = new Type2(null, "ПО");
         Type3 type3 = new Type3(null, "MVP");
         Type4 type4 = new Type4(null, "Новая система");*/
 
-        Type1 type1 = new Type1(null, "T&M");
+    /*    Type1 type1 = new Type1(null, "T&M");
         Type2 type2 = new Type2(null, "ПАК");
         Type3 type3 = new Type3(null, "Полный функционал");
-        Type4 type4 = new Type4(null, "Модернизация системы");
+        Type4 type4 = new Type4(null, "Модернизация системы");*/
 
-        type1Repository.save(type1);
+       /* type1Repository.save(type1);
         type2Repository.save(type2);
         type3Repository.save(type3);
-        type4Repository.save(type4);
+        type4Repository.save(type4);*/
 
 //        ProjectStatus draft = new ProjectStatus(null, "draft");
 //        ProjectStatus inWork = new ProjectStatus(null, "inWork");
@@ -47,7 +69,7 @@ public class HappyRecruterApplication {
 //        projectStatusRepository.save(inWork);
 //        projectStatusRepository.save(archive);
 
-/*        StaffList analyst = new StaffList(null, "analyst");
+       /* StaffList analyst = new StaffList(null, "analyst");
         StaffList front = new StaffList(null, "front");
         StaffList back = new StaffList(null, "back");
         StaffList fullstack = new StaffList(null, "fullstack");

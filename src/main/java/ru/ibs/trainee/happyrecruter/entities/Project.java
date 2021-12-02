@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table
@@ -36,8 +37,6 @@ public class Project {
     private String technologies;
     private boolean isDelegated;
     private boolean isProductProject;
-    private boolean hasTesters;
-    private boolean hasTechAuthor;
     private boolean hasDesigners;
     private boolean hasAnotherSpecialists;
     @ManyToOne
@@ -55,7 +54,8 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "id_stage")
     private Stage idStage;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "id_overtime")
     private Overtime idOvertime;
     @ManyToOne
     @JoinColumn(name = "id_methodology")
@@ -63,7 +63,8 @@ public class Project {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "creator_id")
     private Person person;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "subjectArea_id")
     private SubjectArea subjectArea;
     @OneToOne(cascade = CascadeType.ALL)
     private MemberTeam memberTeam1;

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -19,4 +20,5 @@ public class SubjectArea {
     private Long id;
 
     private String name;
+
 }
