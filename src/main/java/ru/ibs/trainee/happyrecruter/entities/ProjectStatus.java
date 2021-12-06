@@ -17,7 +17,7 @@ public class ProjectStatus {
     @Id
     @GeneratedValue
     private Long id;
-
     private String name;
+
 
 }

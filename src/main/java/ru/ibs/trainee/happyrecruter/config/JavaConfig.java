@@ -18,42 +18,45 @@ import javax.sql.DataSource;
 @Configuration
 public class JavaConfig {
 
-    @Autowired
-    private Environment env;
+	@Autowired
+	private Environment env;
 
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-        driverManagerDataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
-        driverManagerDataSource.setUsername(env.getProperty("spring.datasource.username"));
-        driverManagerDataSource.setPassword(env.getProperty("spring.datasource.password"));
-        driverManagerDataSource.setUrl(env.getProperty("spring.datasource.url"));
-        return driverManagerDataSource;
-    }
+	@Bean
+	public DataSource dataSource() {
+		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+		driverManagerDataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
+		driverManagerDataSource.setUsername(env.getProperty("spring.datasource.username"));
+		driverManagerDataSource.setPassword(env.getProperty("spring.datasource.password"));
+		driverManagerDataSource.setUrl(env.getProperty("spring.datasource.url"));
+		return driverManagerDataSource;
+	}
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(true);
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("ru/ibs/trainee/happyrecruter/entities");
-        factory.setDataSource(dataSource());
-        return factory;
-    }
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		vendorAdapter.setGenerateDdl(true);
+		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+		factory.setJpaVendorAdapter(vendorAdapter);
+		factory.setPackagesToScan("ru/ibs/trainee/happyrecruter/entities");
+		factory.setDataSource(dataSource());
+		return factory;
+	}
 
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-        return transactionManager;
-    }
-    @Bean
-    public ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return mapper;
-    }
+	@Bean
+	public PlatformTransactionManager transactionManager() {
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+		return transactionManager;
+	}
+
+	@Bean
+	public ObjectMapper createObjectMapper() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		return mapper;
+	}
+
+	 
+
 }
-

@@ -17,6 +17,5 @@ public class Overtime {
     @Id
     @GeneratedValue
     private Long id;
-
     private String overtimeName;
 }

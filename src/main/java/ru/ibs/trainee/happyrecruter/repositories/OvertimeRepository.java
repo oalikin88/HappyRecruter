@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 import ru.ibs.trainee.happyrecruter.entities.Overtime;
 
 public interface OvertimeRepository extends CrudRepository<Overtime, Long> {
-    public Overtime findByOvertimeNameIs(String overtime);
+    Overtime findByOvertimeNameIs(String overtime);
 }

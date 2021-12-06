@@ -1,100 +1,88 @@
 package ru.ibs.trainee.happyrecruter.controllers;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-import ru.ibs.trainee.happyrecruter.entities.*;
-import ru.ibs.trainee.happyrecruter.services.ProjectService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import ru.ibs.trainee.happyrecruter.dto.ProjectDTO;
+import ru.ibs.trainee.happyrecruter.dto.ProjectDTOCreate;
+import ru.ibs.trainee.happyrecruter.entities.*;
+import ru.ibs.trainee.happyrecruter.mapper.ProjectMapper;
+import ru.ibs.trainee.happyrecruter.services.ProjectService;
 
 @RestController
 @RequestMapping("project/")
 public class ProjectController {
 
-    @Autowired
-    ProjectService projectService;
+	@Autowired
+	ProjectService projectService;
+	@Autowired
+	ProjectMapper projectMapper;
+	@Autowired
+	Project project;
+	@Autowired
+	ProjectDTO dto;
 
-    @PostMapping("create")
-    public Project create(String companyName, String projectName, String location, String functionalArea,
-                          String description, String projectTasks,
-                          @RequestParam(value = "dateCloseProject")
-                          @JsonDeserialize LocalDate dateCloseProject,
-                          int stakeholders, String procedureEnteringStaff, boolean isDocumentated,
-                          boolean isWorkHome, String technologies, boolean isDelegated,
-                          boolean isProductProject, boolean hasDesigners, boolean hasAnotherSpecialists, String stage,
-                          String overtime, String methodology, String subjectArea,
-                          String type1, String type2, String type3, String type4, float countNeeds1,
-                          float countHired1, float countNeeds2, float countHired2, float countNeeds3,
-                          float countHired3, float countNeeds4, float countHired4, float countNeeds5, float countHired5,
-                          float countNeeds6, float countHired6,
-                          @RequestParam(value = "dateStartProject1")
-                          @JsonDeserialize LocalDate dateStartProject1,
-                          @RequestParam(value = "dateStartProject2")
-                          @JsonDeserialize LocalDate dateStartProject2,
-                          @RequestParam(value = "dateStartProject3")
-                          @JsonDeserialize LocalDate dateStartProject3,
-                          @RequestParam(value = "dateStartProject4")
-                          @JsonDeserialize LocalDate dateStartProject4,
-                          @RequestParam(value = "dateStartProject5")
-                              @JsonDeserialize LocalDate dateStartProject5,
-                          @RequestParam(value = "dateStartProject6")
-                              @JsonDeserialize LocalDate dateStartProject6)
-    {
+	@Tag(name = "Создание проекта", description = "Детальное описание будет позже")
+	@PostMapping("create")
+	public ResponseEntity<String> create(@RequestBody ProjectDTOCreate dto){
+		
+		project = projectMapper.projectDtoToProject(dto);
+		projectService.createProject(project);
+		return new ResponseEntity<String>("ОК ", HttpStatus.OK); // Подумай! Возврат объекта будет со всеми полями
+		
+																	// проекта!!!!
+	}
 
+	@Tag(name = "Просмотр карточки/просмотр карточек", description = "Детальное описание будет позже")
+	@GetMapping(value = "view")
+	public List<ProjectDTO> show(@RequestParam(required = false)Long id) {
+		List<Project> listProject = new ArrayList<>();
+		List<ProjectDTO> listDTO = new ArrayList<>();
+		
+		if(id != null) {
+			listProject = (List<Project>)projectService.openProjects(id);
+			for(Project e : listProject) {
+				dto = projectMapper.projectToProjectDto(e);
+				listDTO.add(dto);
+			}
+			return listDTO;
+		} else {
+			listProject = (List<Project>)projectService.openProjects(null);
+			for(Project e : listProject) {
+				dto = projectMapper.projectToProjectDto(e);
+			}
+			for(Project project : listProject) {
+				dto = projectMapper.projectToProjectDto(project);
+				listDTO.add(dto);
+			}
+			return listDTO;
+		}
+		
+		
+		
+	}
+	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
+	@PutMapping(value = "view/edit/")
+	public ResponseEntity<String> edit(@RequestParam(required = true) Long id, @RequestBody ProjectDTO dto) {
+		project = projectMapper.projectDtoToProject(dto);
+		projectService.editProject(project);
+		return new ResponseEntity<String>("Карточка отредактирована " + project, HttpStatus.OK);
+	}
+	
+	@Tag(name = "Удаление карточки", description = "Детальное описание будет позже")
+	@PostMapping(value = "view/delete")
+	public ResponseEntity<String> delete(@RequestParam(required = true)Long id) {
+		project = projectService.getProject(id);
+		projectService.deleteProject(project.getId());
+		return new ResponseEntity<String>("Карточка удалена" + project, HttpStatus.OK);
+	}
 
-        return projectService.createProject(companyName, projectName, location, functionalArea,
-                description, projectTasks, dateCloseProject, stakeholders, procedureEnteringStaff,
-                isDocumentated, isWorkHome, technologies, isDelegated, isProductProject,
-                hasDesigners, hasAnotherSpecialists, stage, overtime, methodology, subjectArea,
-                type1, type2, type3, type4, countNeeds1, countHired1, countNeeds2,
-                countHired2, countNeeds3, countHired3, countNeeds4, countHired4, countNeeds5, countHired5,
-                countNeeds6, countHired6, dateStartProject1, dateStartProject2, dateStartProject3,
-                dateStartProject4, dateStartProject5, dateStartProject6);
-    }
-
-    @GetMapping(value = "show")
-    public Object show(Long id) {
-        return projectService.showProject(id);
-    }
-
-    @PostMapping(value = "edit/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object edit(@PathVariable (value = "id")Long idEditProject, String companyName, String projectName, String location,
-                       String functionalArea, String description, String projectTasks,
-                       @RequestParam(value = "dateCloseProject")
-                       @JsonDeserialize LocalDate dateCloseProject, int stakeholders,
-                       String procedureEnteringStaff, boolean isDocumentated, boolean isWorkHome,
-                       String technologies, boolean isDelegated, boolean isProductProject, boolean hasDesigners,
-                       boolean hasAnotherSpecialists, String stage, String overtime, String methodology,
-                       String subjectArea, String type1, String type2, String type3, String type4, float countNeeds1,
-                       float countHired1, float countNeeds2, float countHired2, float countNeeds3,
-                       float countHired3, float countNeeds4, float countHired4, float countNeeds5, float countHired5,
-                       float countNeeds6, float countHired6,
-                       @RequestParam(value = "dateStartProject1")
-                           @JsonDeserialize LocalDate dateStartProject1,
-                       @RequestParam(value = "dateStartProject2")
-                           @JsonDeserialize LocalDate dateStartProject2,
-                       @RequestParam(value = "dateStartProject3")
-                           @JsonDeserialize LocalDate dateStartProject3,
-                       @RequestParam(value = "dateStartProject4")
-                           @JsonDeserialize LocalDate dateStartProject4,
-                       @RequestParam(value = "dateStartProject5")
-                           @JsonDeserialize LocalDate dateStartProject5,
-                       @RequestParam(value = "dateStartProject6")
-                           @JsonDeserialize LocalDate dateStartProject6){
-
- return projectService.editProject(idEditProject, companyName, projectName, location, functionalArea, description,
-        projectTasks, dateCloseProject, stakeholders, procedureEnteringStaff,
-        isDocumentated, isWorkHome, technologies, isDelegated, isProductProject,
-        hasDesigners, hasAnotherSpecialists, stage, overtime,
-        methodology, subjectArea, type1, type2, type3, type4, countNeeds1, countHired1, countNeeds2, countHired2,
-         countNeeds3, countHired3, countNeeds4, countHired4, countNeeds5, countHired5, countNeeds6, countHired6,
-         dateStartProject1, dateStartProject2, dateStartProject3, dateStartProject4, dateStartProject5,
-         dateStartProject6);
-    }
 }

@@ -8,10 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.springframework.stereotype.Component;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Component
 public class Stage {
 
     @Id

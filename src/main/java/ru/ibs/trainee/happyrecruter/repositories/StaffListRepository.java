@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 import ru.ibs.trainee.happyrecruter.entities.StaffList;
 
 public interface StaffListRepository extends CrudRepository<StaffList, Long> {
-    public StaffList findStaffListByStaffNameIs(String staffName);
+    StaffList findStaffListByStaffNameIs(String staffName);
 }

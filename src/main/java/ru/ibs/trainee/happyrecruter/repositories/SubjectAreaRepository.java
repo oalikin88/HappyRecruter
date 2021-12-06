@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 import ru.ibs.trainee.happyrecruter.entities.SubjectArea;
 
 public interface SubjectAreaRepository extends CrudRepository<SubjectArea, Long> {
-    public SubjectArea findByNameIs(String subjectName);
+    public SubjectArea findByNameIs(String name);
 }

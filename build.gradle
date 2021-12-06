@@ -7,12 +7,15 @@ plugins {
 group = 'ru.ibs'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+apply plugin: "eclipse"
 
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
 }
+
+
 
 repositories {
     mavenCentral()
@@ -29,12 +32,14 @@ dependencies {
     implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final'
     implementation 'org.springframework.data:spring-data-jpa:2.6.0'
     implementation 'org.postgresql:postgresql:42.3.1'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+  	compileOnly 'org.projectlombok:lombok:1.18.22'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springdoc:springdoc-openapi-ui:1.5.12'
+    implementation 'org.modelmapper:modelmapper:2.4.4'
+  
 
 }
+
 
 test {
     useJUnitPlatform()
