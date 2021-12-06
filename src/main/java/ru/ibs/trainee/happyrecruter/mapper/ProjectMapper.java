@@ -120,7 +120,7 @@ public class ProjectMapper {
 		dto.setCountHired1(project.getMemberTeam1().getCountHired());
 		dto.setCountNeeds1(project.getMemberTeam1().getCountNeeds());
 		
-		dto.setIdMemberTeam1(project.getMemberTeam2().getId());
+		dto.setIdMemberTeam2(project.getMemberTeam2().getId());
 		dto.setCountHired2(project.getMemberTeam2().getCountHired());
 		dto.setCountNeeds2(project.getMemberTeam2().getCountNeeds());
 		
@@ -182,6 +182,7 @@ public class ProjectMapper {
 		project.setIdType2(new Type2(dto.getIdType2(), dto.getType2()));
 		project.setIdType3(new Type3(dto.getIdType3(), dto.getType3()));
 		project.setIdType4(new Type4(dto.getIdType4(), dto.getType4()));
+		
 		project.setMemberTeam1(new MemberTeam(dto.getIdMemberTeam1(), dto.getCountNeeds1(), dto.getCountHired1(),
 				dto.getDateStartProject1()));
 		project.setMemberTeam2(new MemberTeam(dto.getIdMemberTeam2(), dto.getCountNeeds2(), dto.getCountHired2(),

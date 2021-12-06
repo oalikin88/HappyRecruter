@@ -117,43 +117,58 @@ public class ProjectServiceImpl implements ProjectService {
 
 		Project editProject = projectRepository.findById(project.getId()).get();
 
-		if (!project.getProjectStatus().getName().equals(editProject.getProjectStatus().getName())) {
-			project.getProjectStatus()
-					.setId(projectStatusRepository.findByNameIs(project.getProjectStatus().getName()).getId());
+		
+		
+		if(!project.getCompanyName().equals(editProject.getCompanyName())) {
+			editProject.setCompanyName(project.getCompanyName());
 		}
-
-		if (!project.getSubjectArea().getName().equals(editProject.getSubjectArea().getName())) {
-			project.getSubjectArea()
-					.setId(subjectAreaRepository.findByNameIs(project.getSubjectArea().getName()).getId());
+		if(!project.getProjectName().equals(editProject.getProjectName())) {
+			editProject.setProjectName(project.getProjectName());
 		}
-
-		if (!project.getIdOvertime().getOvertimeName().equals(editProject.getIdOvertime().getOvertimeName())) {
-			project.getIdOvertime()
-					.setId(overtimeRepository.findByOvertimeNameIs(project.getIdOvertime().getOvertimeName()).getId());
+		if(!project.getDescription().equals(editProject.getDescription())) {
+			editProject.setDescription(project.getDescription());
 		}
-
-		if (!project.getIdStage().getStageName().equals(editProject.getIdStage().getStageName())) {
-			project.getIdStage().setId(stageRepository.findByStageNameIs(project.getIdStage().getStageName()).getId());
+		if(!project.getLocation().equals(editProject.getLocation())) {
+			editProject.setLocation(project.getLocation());
 		}
-
-		if (!project.getIdMethodology().getMethodologyName()
-				.equals(editProject.getIdMethodology().getMethodologyName())) {
-			project.getIdMethodology().setId(methodologyRepository
-					.findByMethodologyNameIs(project.getIdMethodology().getMethodologyName()).getId());
+		if(!project.getFunctionalArea().equals(editProject.getFunctionalArea())) {
+			editProject.setFunctionalArea(project.getFunctionalArea());
 		}
-
-		if (!project.getIdType1().getType().equals(editProject.getIdType1().getType())) {
-			project.getIdType1().setType(editProject.getIdType1().getType());
+		if(!project.getProjectTasks().equals(editProject.getProjectTasks())) {
+			editProject.setProjectTasks(project.getProjectTasks());
 		}
-		if (!project.getIdType2().getType().equals(editProject.getIdType2().getType())) {
-			project.setIdType2(editProject.getIdType2());
+		if(!project.getDateCloseProject().equals(editProject.getDateCloseProject())) {
+			editProject.setDateCloseProject(project.getDateCloseProject());
 		}
-		if (!project.getIdType3().getType().equals(editProject.getIdType3().getType())) {
-			project.setIdType3(editProject.getIdType3());
+		if(!project.getTechnologies().equals(editProject.getTechnologies())) {
+			editProject.setTechnologies(project.getTechnologies());
 		}
-		if (!project.getIdType4().getType().equals(editProject.getIdType4().getType())) {
-			project.setIdType4(editProject.getIdType4());
+		if(project.getStakeholders() != editProject.getStakeholders()) {
+			editProject.setStakeholders(project.getStakeholders());
 		}
+		if(!project.getProcedureEnteringStaff().equals(editProject.getProcedureEnteringStaff())) {
+			editProject.setProcedureEnteringStaff(project.getProcedureEnteringStaff());
+		}
+		if(project.isDocumentated() != editProject.isDocumentated()) {
+			editProject.setDocumentated(project.isDocumentated());
+		}
+		if(project.isInWorked() == editProject.isInWorked()) {
+			editProject.setInWorked(editProject.isInWorked());
+		}
+		if(project.isDelegated() != editProject.isDelegated()) {
+			editProject.setDelegated(project.isDelegated());
+		}
+		if(project.isProductProject() != editProject.isProductProject()) {
+			editProject.setProductProject(project.isProductProject());
+		}
+		if(project.isHasDesigners() != editProject.isHasDesigners()) {
+			editProject.setHasDesigners(project.isHasDesigners());
+		}
+		if(project.isHasAnotherSpecialists() != editProject.isHasAnotherSpecialists()) {
+			editProject.setHasAnotherSpecialists(project.isHasAnotherSpecialists());
+		}
+		
+		
 
 		/*
 		 * project.getMemberTeam1().setStaffList(staffListRepository.
@@ -172,25 +187,59 @@ public class ProjectServiceImpl implements ProjectService {
 
 		
 		  if (!project.getMemberTeam1().equals(editProject.getMemberTeam1())) {
-		  System.out.println("dd"); 
+			  editProject.setMemberTeam1(project.getMemberTeam1()); 
 		  }
 		  if(!project.getMemberTeam2().equals(editProject.getMemberTeam2())) {
-		  project.setMemberTeam2(editProject.getMemberTeam2()); 
+			  editProject.setMemberTeam2(project.getMemberTeam2()); 
 		  }
 		  if(!project.getMemberTeam3().equals(editProject.getMemberTeam3())) {
-		  project.setMemberTeam3(editProject.getMemberTeam3()); 
+			  editProject.setMemberTeam3(project.getMemberTeam3());  
 		  }
 		  if(!project.getMemberTeam4().equals(editProject.getMemberTeam4())) {
-		  project.setMemberTeam4(editProject.getMemberTeam4());
+			  editProject.setMemberTeam4(project.getMemberTeam4()); 
 		  }
 		  if(!project.getMemberTeam5().equals(editProject.getMemberTeam5())) {
-		  project.setMemberTeam5(editProject.getMemberTeam5());
+			  editProject.setMemberTeam5(project.getMemberTeam5()); 
 		  }
 		  if(!project.getMemberTeam6().equals(editProject.getMemberTeam6())) {
-		  project.setMemberTeam6(editProject.getMemberTeam6()); }
-		 
+			  editProject.setMemberTeam6(project.getMemberTeam6()); 
+		  }
+		  if (!project.getProjectStatus().getName().equals(editProject.getProjectStatus().getName())) {
+				editProject.setProjectStatus(projectStatusRepository.findByNameIs(project.getProjectStatus().getName()));
+			}
 
-		return projectRepository.save(project);
+			if (!project.getSubjectArea().getName().equals(editProject.getSubjectArea().getName())) {
+				editProject.setSubjectArea(subjectAreaRepository.findByNameIs(project.getSubjectArea().getName()));
+			}
+
+			if (!project.getIdOvertime().getOvertimeName().equals(editProject.getIdOvertime().getOvertimeName())) {
+				editProject.setIdOvertime(overtimeRepository.findByOvertimeNameIs(project.getIdOvertime().getOvertimeName()));
+			}
+
+			if (!project.getIdStage().getStageName().equals(editProject.getIdStage().getStageName())) {
+				editProject.setIdStage(stageRepository.findByStageNameIs(project.getIdStage().getStageName()));
+			}
+
+			if (!project.getIdMethodology().getMethodologyName()
+					.equals(editProject.getIdMethodology().getMethodologyName())) {
+				editProject.setIdMethodology(methodologyRepository.findByMethodologyNameIs(project.getIdMethodology()
+						.getMethodologyName()));
+			}
+
+			if (!project.getIdType1().getType().equals(editProject.getIdType1().getType())) {
+				editProject.setIdType1(type1Repository.findByTypeIs(project.getIdType1().getType()));
+			}
+			if (!project.getIdType2().getType().equals(editProject.getIdType2().getType())) {
+				editProject.setIdType2(type2Repository.findByTypeIs(project.getIdType2().getType()));
+			}
+			if (!project.getIdType3().getType().equals(editProject.getIdType3().getType())) {
+				editProject.setIdType3(type3Repository.findByTypeIs(project.getIdType3().getType()));
+			}
+			if (!project.getIdType4().getType().equals(editProject.getIdType4().getType())) {
+				editProject.setIdType4(type4Repository.findByTypeIs(project.getIdType4().getType()));
+			}
+
+		return projectRepository.save(editProject);
 	}
 
 	@Override

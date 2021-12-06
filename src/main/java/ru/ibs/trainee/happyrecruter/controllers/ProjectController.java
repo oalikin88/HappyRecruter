@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +71,7 @@ public class ProjectController {
 		
 		
 	}
+	@Transactional
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
 	@PutMapping(value = "view/edit/")
 	public ResponseEntity<String> edit(@RequestParam(required = true) Long id, @RequestBody ProjectDTO dto) {
