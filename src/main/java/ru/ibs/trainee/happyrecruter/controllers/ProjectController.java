@@ -32,6 +32,7 @@ public class ProjectController {
 	@Autowired
 	ProjectDTO dto;
 
+
 	@Tag(name = "Создание проекта", description = "Детальное описание будет позже")
 	@PostMapping("create")
 	public ResponseEntity<String> create(@RequestBody ProjectDTOCreate dto){
@@ -85,7 +86,7 @@ public class ProjectController {
 	public ResponseEntity<String> delete(@RequestParam(required = true)Long id) {
 		project = projectService.getProject(id);
 		projectService.deleteProject(project.getId());
-		return new ResponseEntity<String>("Карточка удалена" + project, HttpStatus.OK);
+		return new ResponseEntity<String>("Карточка удалена", HttpStatus.OK);
 	}
 
 }

@@ -43,31 +43,31 @@ public class Project {
     private boolean isProductProject;
     private boolean hasDesigners;
     private boolean hasAnotherSpecialists;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_type1")
     private Type1 idType1;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_type2")
     private Type2 idType2;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_type3")
     private Type3 idType3;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_type4")
     private Type4 idType4;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_stage")
     private Stage idStage;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_overtime")
     private Overtime idOvertime;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_methodology")
     private Methodology idMethodology;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "creator_id")
     private Person person;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "subjectArea_id")
     private SubjectArea subjectArea;
     @OneToOne(cascade = CascadeType.ALL)
@@ -82,6 +82,6 @@ public class Project {
     private MemberTeam memberTeam5;
     @OneToOne(cascade = CascadeType.ALL)
     private MemberTeam memberTeam6;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private ProjectStatus projectStatus;
 }

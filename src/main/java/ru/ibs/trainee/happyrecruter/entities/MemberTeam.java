@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -36,8 +37,15 @@ public class MemberTeam {
         this.id = id;
         this.countNeeds = countNeeds;
         this.countHired = countHired;
-        this.dateStartProject = dateStartProject;
-    }
+        this.dateStartProject = dateStartProject;        
+        
+        
+   }
+        
+
+        
+        
+  
 
 
 

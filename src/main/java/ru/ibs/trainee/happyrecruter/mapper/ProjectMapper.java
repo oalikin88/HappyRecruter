@@ -8,6 +8,7 @@ import ru.ibs.trainee.happyrecruter.entities.Methodology;
 import ru.ibs.trainee.happyrecruter.entities.Overtime;
 import ru.ibs.trainee.happyrecruter.entities.Project;
 import ru.ibs.trainee.happyrecruter.entities.ProjectStatus;
+import ru.ibs.trainee.happyrecruter.entities.StaffList;
 import ru.ibs.trainee.happyrecruter.entities.Stage;
 import ru.ibs.trainee.happyrecruter.entities.SubjectArea;
 import ru.ibs.trainee.happyrecruter.entities.Type1;
