@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class Type3 {
     @Id
     @GeneratedValue
     private Long id;
-
+    @Column(name = "type_value")
     private String type;
 
 	@Override

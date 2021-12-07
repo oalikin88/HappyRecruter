@@ -38,9 +38,11 @@ public class HappyRecruterApplication {
         StageRepository stageRepository = context.getBean(StageRepository.class);
 
 
+		
+		
 		/*
 		 * Methodology agile = new Methodology(null, "Agile"); Methodology watefoll =
-		 * new Methodology(null, "Watefoll"); methodologyRepository.save(agile);
+		 * new Methodology(null, "Waterfall"); methodologyRepository.save(agile);
 		 * methodologyRepository.save(watefoll);
 		 * 
 		 * Overtime sometimes = new Overtime(null, "Иногда"); Overtime always = new
@@ -72,25 +74,32 @@ public class HappyRecruterApplication {
 		 * subjectAreaRepository.save(management); subjectAreaRepository.save(gkh);
 		 * subjectAreaRepository.save(banking); subjectAreaRepository.save(oilIndustry);
 		 */
+		 
+		 
 
 
+		
 		/*
 		 * Type1 type1 = new Type1(null, "Fixed Price"); Type2 type2 = new Type2(null,
 		 * "ПО"); Type3 type3 = new Type3(null, "MVP"); Type4 type4 = new Type4(null,
 		 * "Новая система");
 		 */
+		 
 
 		
-//		  Type1 type1 = new Type1(null, "T&M"); Type2 type2 = new Type2(null, "ПАК");
-//		  Type3 type3 = new Type3(null, "Полный функционал"); Type4 type4 = new
-//		  Type4(null, "Модернизация системы");
-//		 
-//
-//        type1Repository.save(type1);
-//        type2Repository.save(type2);
-//        type3Repository.save(type3);
-//        type4Repository.save(type4);
+//			
+//			  Type1 type1 = new Type1(null, "T&M"); Type2 type2 = new Type2(null, "ПАК");
+//			  Type3 type3 = new Type3(null, "Полный функционал"); Type4 type4 = new
+//			  Type4(null, "Модернизация системы");
+			 
 
+//		  type1Repository.save(type1);
+//		  type2Repository.save(type2);
+//		  type3Repository.save(type3);
+//		  type4Repository.save(type4);
+//		 
+		
+		
 		/*
 		 * ProjectStatus draft = new ProjectStatus(null, "Черновик"); ProjectStatus
 		 * inWork = new ProjectStatus(null, "В работе"); ProjectStatus archive = new
@@ -104,6 +113,7 @@ public class HappyRecruterApplication {
 		 * StaffList fullstack = new StaffList(null, "Fullstack"); StaffList tester =
 		 * new StaffList(null, "Тестировщики"); StaffList techwr = new StaffList(null,
 		 * "Техписы");
+		 * 
 		 * 
 		 * 
 		 * staffListRepository.save(analyst); staffListRepository.save(front);
