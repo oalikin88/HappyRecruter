@@ -8,7 +8,15 @@ import ru.ibs.trainee.happyrecruter.entities.*;
 import ru.ibs.trainee.happyrecruter.repositories.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -37,6 +45,9 @@ public class ProjectServiceImpl implements ProjectService {
 	ProjectStatusRepository projectStatusRepository;
 	@Autowired
 	MemberTeamRepository memberTeamRepository;
+
+	@Autowired
+	EntityManagerFactory emf;
 
 	@Override
 	public Project createProject(Project project) {
@@ -80,16 +91,18 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public Object openProjects(Long id) {
+	public Project openProjects(Long id) {
 
-		List<Project> list = new ArrayList<>();
-		if (id != null) {
-			list.add(projectRepository.findById(id).get());
-			return list;
-		} else {
-			projectRepository.findAll().forEach(e -> list.add(e));
-			return list;
-		}
+		return projectRepository.findById(id).get();
+		
+//		List<Project> list = new ArrayList<>();
+//		if (id != null) {
+//			list.add(projectRepository.findById(id).get());
+// list;
+//		} else {
+//			projectRepository.findAll().forEach(e -> list.add(e));
+//			return list;
+//		}
 	}
 
 	public Project getProject(Long id) {
@@ -220,14 +233,35 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public void deleteProject(Long id) {
+
 		projectRepository.deleteById(id);
 	}
-	
-	public List<Project> viewProject() {
-		List<Project> list = new ArrayList<>();
-		projectRepository.findAll().forEach(e -> list.add(e));
+
+	@Override
+	public List<ProjectDTOView> JPQLQuery() {
+		EntityManager em = emf.createEntityManager();
+		// em.getTransaction().begin( );
+
+		Query query = em.createQuery("select proj.id proj.companyName proj.dateTimeCreate proj.projectName"
+				+ "proj.projectStatus proj.isDelegated from Project as proj MemberTeam as membr join"
+				+ "membr.dateStartProject as dateSt");
+		@SuppressWarnings("unchecked")
+		List<ProjectDTOView> list = (List<ProjectDTOView>) query.getResultList();
+		em.close();
+
 		return list;
+
+	}
+
+	/*
+	 * public List<StudentEntity> studentAllData() { return
+	 * studentrepository.findAll(); }
+	 */
+	
+	public Collection<Project> showProjects() {
+			
 		
+		return projectRepository.findAllQuery();
 	}
 
 }

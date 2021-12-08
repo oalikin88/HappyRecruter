@@ -1,32 +1,91 @@
 CREATE TABLE public.stage (
-		id INT8 NOT NULL,
+		id INT8 NOT NULL PRIMARY KEY,
 		stagename VARCHAR(255)
 	);
+	
 
 CREATE TABLE public.projectstatus (
-		id INT8 NOT NULL,
+		id INT8 NOT NULL PRIMARY KEY,
 		name VARCHAR(255)
 	);
+	
 
 CREATE TABLE public.type3 (
-		id INT8 NOT NULL,
+		id INT8 NOT NULL PRIMARY KEY,
 		type_value VARCHAR(255)
 	);
+	
 
 CREATE TABLE public.persons (
-		id INT8 NOT NULL,
+		id INT8 NOT NULL PRIMARY KEY,
 		fio VARCHAR(255),
 		login VARCHAR(255),
 		password VARCHAR(255)
+	);
+	
+
+CREATE TABLE public.subjectarea (
+		id INT8 NOT NULL PRIMARY KEY,
+		name VARCHAR(255)
+	);
+	
+
+CREATE TABLE public.memberteam (
+		id INT8 NOT NULL PRIMARY KEY,
+		counthired FLOAT4 NOT NULL,
+		countneeds FLOAT4 NOT NULL,
+		datestartproject DATE,
+		id_staff INT8
+	);
+	
+
+CREATE TABLE public.overtime (
+		id INT8 NOT NULL PRIMARY KEY,
+		overtimename VARCHAR(255)
+	);
+	
+
+CREATE TABLE public.type1 (
+		id INT8 NOT NULL PRIMARY KEY,
+		type_value VARCHAR(255)
+	);
+	
+
+CREATE TABLE public.methodology (
+		id INT8 NOT NULL PRIMARY KEY,
+		methodologyname VARCHAR(255)
+	);
+	
+
+CREATE TABLE public.type2 (
+		id INT8 NOT NULL PRIMARY KEY,
+		type_value VARCHAR(255)
+	);
+	
+
+CREATE TABLE public.roles (
+		id INT8 NOT NULL PRIMARY KEY,
+		name VARCHAR(255)
+	);
+	
+
+CREATE TABLE public.type4 (
+		id INT8 NOT NULL PRIMARY KEY,
+		type_value VARCHAR(255)
+	);
+	
+
+CREATE TABLE public.stafflist (
+		id INT8 NOT NULL PRIMARY KEY,
+		staffname VARCHAR(255)
 	);
 
 CREATE TABLE public.persons_roles (
 		person_id INT8 NOT NULL,
 		role_id INT8 NOT NULL
 	);
-
-CREATE TABLE public.project (
-		id INT8 NOT NULL,
+	CREATE TABLE public.project (
+		id INT8 NOT NULL PRIMARY KEY,
 		companyname VARCHAR(255),
 		datecloseproject DATE,
 		datetimecreate TIMESTAMP,
@@ -64,57 +123,56 @@ CREATE TABLE public.project (
 		projectstatus_id INT8,
 		subjectarea_id INT8
 	);
-
-CREATE TABLE public.subjectarea (
-		id INT8 NOT NULL,
-		name VARCHAR(255)
-	);
-
-CREATE TABLE public.memberteam (
-		id INT8 NOT NULL,
-		counthired FLOAT4 NOT NULL,
-		countneeds FLOAT4 NOT NULL,
-		datestartproject DATE,
-		id_staff INT8
-	);
-
-CREATE TABLE public.overtime (
-		id INT8 NOT NULL,
-		overtimename VARCHAR(255)
-	);
-
-CREATE TABLE public.type1 (
-		id INT8 NOT NULL,
-		type_value VARCHAR(255)
-	);
-
-CREATE TABLE public.methodology (
-		id INT8 NOT NULL,
-		methodologyname VARCHAR(255)
-	);
-
-CREATE TABLE public.type2 (
-		id INT8 NOT NULL,
-		type_value VARCHAR(255)
-	);
-
-CREATE TABLE public.roles (
-		id INT8 NOT NULL,
-		name VARCHAR(255)
-	);
-
-CREATE TABLE public.type4 (
-		id INT8 NOT NULL,
-		type_value VARCHAR(255)
-	);
-
-CREATE TABLE public.stafflist (
-		id INT8 NOT NULL,
-		staffname VARCHAR(255)
-	);
 	
+ALTER TABLE public.project ADD FOREIGN KEY
+(id_stage) REFERENCES public.stage;
+ALTER TABLE public.project ADD FOREIGN KEY
+(id_overtime) REFERENCES public.overtime;
+ALTER TABLE public.project ADD FOREIGN KEY
+(id_methodology) REFERENCES public.methodology;
+ALTER TABLE public.project ADD FOREIGN KEY
+(id_type1) REFERENCES public.type1;
+ALTER TABLE public.project ADD FOREIGN KEY
+(id_type2) REFERENCES public.type2;
+ALTER TABLE public.project ADD FOREIGN KEY
+(id_type3) REFERENCES public.type3;
+ALTER TABLE public.project ADD FOREIGN KEY
+(id_type4) REFERENCES public.type4;
+
+ALTER TABLE public.project ADD FOREIGN KEY
+(memberteam1_id) REFERENCES public.memberteam;
+ALTER TABLE public.project ADD FOREIGN KEY
+(memberteam2_id) REFERENCES public.memberteam;
+ALTER TABLE public.project ADD FOREIGN KEY
+(memberteam3_id) REFERENCES public.memberteam;
+ALTER TABLE public.project ADD FOREIGN KEY
+(memberteam4_id) REFERENCES public.memberteam;
+ALTER TABLE public.project ADD FOREIGN KEY
+(memberteam5_id) REFERENCES public.memberteam;
+ALTER TABLE public.project ADD FOREIGN KEY
+(memberteam6_id) REFERENCES public.memberteam;
+
+ALTER TABLE public.project ADD FOREIGN KEY
+(creator_id) REFERENCES public.persons;
 	
-	insert into methodology (id, methodologyname) values
+ALTER TABLE public.project ADD FOREIGN KEY
+(projectstatus_id) REFERENCES public.projectstatus;
+
+ALTER TABLE public.project ADD FOREIGN KEY
+(subjectarea_id) REFERENCES public.subjectarea;
+
+
+ALTER TABLE public.persons_roles ADD FOREIGN KEY
+(person_id) REFERENCES public.persons;
+ALTER TABLE public.persons_roles ADD FOREIGN KEY
+(role_id) REFERENCES public.roles;
+
+ALTER TABLE public.memberteam ADD FOREIGN KEY
+(id_staff) REFERENCES public.stafflist;
+
+
+
+insert into methodology (id, methodologyname) values
 (1, 'Agile'),
 (2, 'Waterfall');
 
