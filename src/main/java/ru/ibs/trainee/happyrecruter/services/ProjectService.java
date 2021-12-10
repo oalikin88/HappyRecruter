@@ -2,7 +2,6 @@ package ru.ibs.trainee.happyrecruter.services;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
 import ru.ibs.trainee.happyrecruter.entities.Project;
@@ -19,8 +18,9 @@ public interface ProjectService {
 		
 	void deleteProject(Long id);
 	
-	List<ProjectDTOView> JPQLQuery();
-	Collection<Project> showProjects();
+	List<ProjectDTOView> projectDTOViewSortByName();
+
+	List<ProjectDTOView> showTest();
 	
 
 }

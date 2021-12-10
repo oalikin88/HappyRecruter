@@ -5,18 +5,19 @@ import org.springframework.stereotype.Service;
 
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
 import ru.ibs.trainee.happyrecruter.entities.*;
+import ru.ibs.trainee.happyrecruter.mapper.ProjectDTOViewMapper;
 import ru.ibs.trainee.happyrecruter.repositories.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -94,15 +95,15 @@ public class ProjectServiceImpl implements ProjectService {
 	public Project openProjects(Long id) {
 
 		return projectRepository.findById(id).get();
-		
-//		List<Project> list = new ArrayList<>();
-//		if (id != null) {
-//			list.add(projectRepository.findById(id).get());
-// list;
-//		} else {
-//			projectRepository.findAll().forEach(e -> list.add(e));
-//			return list;
-//		}
+
+		// List<Project> list = new ArrayList<>();
+		// if (id != null) {
+		// list.add(projectRepository.findById(id).get());
+		// list;
+		// } else {
+		// projectRepository.findAll().forEach(e -> list.add(e));
+		// return list;
+		// }
 	}
 
 	public Project getProject(Long id) {
@@ -237,31 +238,35 @@ public class ProjectServiceImpl implements ProjectService {
 		projectRepository.deleteById(id);
 	}
 
+	@Autowired
+	ProjectDTOView projectDTOView;
+	@Autowired
+	ProjectDTOViewMapper dtoViewMapper;
+
 	@Override
-	public List<ProjectDTOView> JPQLQuery() {
-		EntityManager em = emf.createEntityManager();
-		// em.getTransaction().begin( );
-
-		Query query = em.createQuery("select proj.id proj.companyName proj.dateTimeCreate proj.projectName"
-				+ "proj.projectStatus proj.isDelegated from Project as proj MemberTeam as membr join"
-				+ "membr.dateStartProject as dateSt");
-		@SuppressWarnings("unchecked")
-		List<ProjectDTOView> list = (List<ProjectDTOView>) query.getResultList();
-		em.close();
-
-		return list;
-
-	}
-
-	/*
-	 * public List<StudentEntity> studentAllData() { return
-	 * studentrepository.findAll(); }
-	 */
-	
-	public Collection<Project> showProjects() {
-			
+	public List<ProjectDTOView> showTest() {
+		List<ProjectDTOView> listDTO = new ArrayList<>();
 		
-		return projectRepository.findAllQuery();
+		List<Project> list = projectRepository.findAll();
+		for (Project pr : list) {
+			projectDTOView = dtoViewMapper.projectToProjectDTOView(pr);
+			List<LocalDate> listDate = new ArrayList<>();
+			listDate.add(pr.getMemberTeam1().getDateStartProject());
+			listDate.add(pr.getMemberTeam2().getDateStartProject());
+			listDate.add(pr.getMemberTeam3().getDateStartProject());
+			listDate.add(pr.getMemberTeam4().getDateStartProject());
+			listDate.add(pr.getMemberTeam5().getDateStartProject());
+			listDate.add(pr.getMemberTeam6().getDateStartProject());
+			Collections.sort(listDate);
+			projectDTOView.setDateStartProject(listDate.get(0));
+			listDTO.add(projectDTOView);
+		}
+		return listDTO;
 	}
+
+	public List<ProjectDTOView> projectDTOViewSortByName() {
+		return showTest().stream().sorted((o1, o2) -> o1.getCompanyName().compareTo(o2.getCompanyName())).collect(Collectors.toList());
+	}
+
 
 }
