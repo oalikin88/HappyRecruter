@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -244,7 +245,7 @@ public class ProjectServiceImpl implements ProjectService {
 	ProjectDTOViewMapper dtoViewMapper;
 
 	@Override
-	public List<ProjectDTOView> showTest() {
+	public List<ProjectDTOView> showRegistryCards() {
 		List<ProjectDTOView> listDTO = new ArrayList<>();
 		
 		List<Project> list = projectRepository.findAll();
@@ -264,8 +265,57 @@ public class ProjectServiceImpl implements ProjectService {
 		return listDTO;
 	}
 
-	public List<ProjectDTOView> projectDTOViewSortByName() {
-		return showTest().stream().sorted((o1, o2) -> o1.getCompanyName().compareTo(o2.getCompanyName())).collect(Collectors.toList());
+	public List<ProjectDTOView> projectDTOViewSortByProjectName() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName))
+		.collect(Collectors.toList());
+	}
+	public List<ProjectDTOView> projectDTOViewSortByProjectNameReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName)
+		.reversed()).collect(Collectors.toList());
+	}
+	
+
+	public List<ProjectDTOView> projectDTOViewsSortByStartDate() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate))
+		.collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewsSortByStartDateReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate)
+		.reversed()).collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewsSortByStatus() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectStatus))
+		.collect(Collectors.toList());
+	}
+	public List<ProjectDTOView> projectDTOViewsSortByStatusReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectStatus)
+		.reversed()).collect(Collectors.toList());
+	}
+	public List<ProjectDTOView> projectDTOViewSortByDatePeopleStartWorking() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject))
+		.collect(Collectors.toList());
+	}
+	public List<ProjectDTOView> projectDTOViewSortByDatePeopleStartWorkingReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject)
+		.reversed()).collect(Collectors.toList());
+	}
+	public List<ProjectDTOView> projectDTOViewSortedByDelegate() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated)).
+		collect(Collectors.toList());
+	}
+	public List<ProjectDTOView> projectDTOViewSortedByDelegateReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed())
+		.collect(Collectors.toList());
+	}
+	public List<ProjectDTOView> projectDTOViewSortByCompanyName() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName))
+		.collect(Collectors.toList());
+	}
+	public List<ProjectDTOView> projectDTOViewSortByCompanyNameReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed())
+		.collect(Collectors.toList());
 	}
 
 

@@ -69,27 +69,40 @@ public class ProjectController {
 		return new ResponseEntity<String>("Карточка удалена", HttpStatus.OK);
 	}
 
-	@Tag(name = "Реестр карточек", description = "Детальное описание будет позже")
-	@GetMapping(value = "view")
-	public List<ProjectDTOView> registry() {
-		return projectService.showTest();
-	}
-
-	@Tag(name = "Сортировка по имени", description = "Детальное описание будет позже")
-	@GetMapping(value = "view/1")
-	public List<ProjectDTOView> registrySortByName() {
-		return projectService.projectDTOViewSortByName();
-	}
-
-	@Tag(name = "Тест", description = "1 - сортировка по дате вывода людей на проект; \n "
-	+ " 2 - сортировка по наименовании компании")
-	@GetMapping(value = "test/{i}")
-	public List<ProjectDTOView> test(@RequestParam(required = true) int value) {
+	@Tag(name = "Реестр карточек", description = "1 - сортировка по дате вывода людей на проект; 2 - сортировка по наименованию проекта; 3 - сортировка в обратном порядке"
+												+ " 4 - сортировка по дате открытия; 5 - сортировка в обратном порядке;"
+												+ " 6 - сортировка по статусу проекта; 7 - сортировка в обратном порядке;"
+												+ " 8 - сортировка по дате вывода людей на проект; 9 - сортировка в обратном порядке"
+												+ " 10 - сортировка по делегированию; 11 - сортировка в обратном порядке"
+												+ " 12 - сортировка по заказчику; 13 - сортировка в обратном порядке;")
+	@GetMapping(value = "view/registry")
+	public List<ProjectDTOView> viewRegistryCards(int value) {
 		if (value == 1) {
-			return projectService.showTest();
+			return projectService.showRegistryCards();
+		} else if (value == 2) {
+			return projectService.projectDTOViewSortByProjectName();
+		} else if (value == 3) {
+			return projectService.projectDTOViewSortByProjectNameReversed();
+		} else if (value == 4) {
+			return projectService.projectDTOViewsSortByStartDate();
+		} else if (value == 5) {
+			return projectService.projectDTOViewsSortByStartDateReversed();
+		} else if (value == 6) {
+			return projectService.projectDTOViewsSortByStatus();
+		} else if (value == 7) {
+			return projectService.projectDTOViewsSortByStatusReversed();
+		} else if (value == 8) {
+			return projectService.projectDTOViewSortByDatePeopleStartWorking();
+		} else if (value == 9) {
+			return projectService.projectDTOViewSortByDatePeopleStartWorkingReversed();
+		} else if (value == 10) {
+			return projectService.projectDTOViewSortedByDelegate();
+		} else if (value == 11) {
+			return projectService.projectDTOViewSortedByDelegateReversed();
+		} else if (value == 12) {
+			return projectService.projectDTOViewSortByCompanyName();
 		} else {
-			return projectService.projectDTOViewSortByName();
+			return projectService.projectDTOViewSortByCompanyNameReversed();
 		}
 	}
-
 }
