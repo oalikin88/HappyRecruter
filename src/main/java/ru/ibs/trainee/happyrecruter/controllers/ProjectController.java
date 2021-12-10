@@ -1,20 +1,12 @@
 package ru.ibs.trainee.happyrecruter.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTO;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOCreate;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
@@ -47,26 +39,17 @@ public class ProjectController {
 	}
 
 	@Tag(name = "Просмотр карточки", description = "Детальное описание будет позже")
-
 	@GetMapping(value = "view/{id}")
 	public ProjectDTO show(@PathVariable(name = "id") Long id) {
-//		List<Project> listProject = new ArrayList<>();
-//		List<ProjectDTO> listDTO = new ArrayList<>();
+		// List<Project> listProject = new ArrayList<>();
+		// List<ProjectDTO> listDTO = new ArrayList<>();
 
 		project = projectService.openProjects(id);
-//		for (Project e : listProject) {
+		// for (Project e : listProject) {
 		dto = projectMapper.projectToProjectDto(project);
-//			listDTO.add(dto);
-//		}
+		// listDTO.add(dto);
+		// }
 		return dto;
-	}
-
-	@Tag(name = "Реестр карточек", description = "Детальное описание будет позже")
-
-	@GetMapping(value = "view")
-	public Collection<Project> view() {
-
-		return projectService.showProjects();
 	}
 
 	@Transactional
@@ -84,6 +67,29 @@ public class ProjectController {
 		project = projectService.getProject(id);
 		projectService.deleteProject(project.getId());
 		return new ResponseEntity<String>("Карточка удалена", HttpStatus.OK);
+	}
+
+	@Tag(name = "Реестр карточек", description = "Детальное описание будет позже")
+	@GetMapping(value = "view")
+	public List<ProjectDTOView> registry() {
+		return projectService.showTest();
+	}
+
+	@Tag(name = "Сортировка по имени", description = "Детальное описание будет позже")
+	@GetMapping(value = "view/1")
+	public List<ProjectDTOView> registrySortByName() {
+		return projectService.projectDTOViewSortByName();
+	}
+
+	@Tag(name = "Тест", description = "1 - сортировка по дате вывода людей на проект; \n "
+	+ " 2 - сортировка по наименовании компании")
+	@GetMapping(value = "test/{i}")
+	public List<ProjectDTOView> test(@RequestParam(required = true) int value) {
+		if (value == 1) {
+			return projectService.showTest();
+		} else {
+			return projectService.projectDTOViewSortByName();
+		}
 	}
 
 }
