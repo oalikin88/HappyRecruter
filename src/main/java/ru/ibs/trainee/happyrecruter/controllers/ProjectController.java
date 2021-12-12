@@ -2,7 +2,11 @@ package ru.ibs.trainee.happyrecruter.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
+
+import org.apache.logging.log4j.util.PropertySource.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTO;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOCreate;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
+import ru.ibs.trainee.happyrecruter.dto.ProjectDTOedit;
 import ru.ibs.trainee.happyrecruter.entities.*;
 import ru.ibs.trainee.happyrecruter.mapper.ProjectMapper;
+import ru.ibs.trainee.happyrecruter.mapper.ProjectMapperTest;
 import ru.ibs.trainee.happyrecruter.services.ProjectService;
 
 @RestController
@@ -23,15 +29,17 @@ public class ProjectController {
 	@Autowired
 	ProjectMapper projectMapper;
 	@Autowired
+	ProjectMapperTest mapper;
+	@Autowired
 	Project project;
 	@Autowired
 	ProjectDTO dto;
 
 	@Tag(name = "Создание проекта", description = "Детальное описание будет позже")
 	@PostMapping("create")
-	public ResponseEntity<String> create(@RequestBody ProjectDTOCreate dto) {
+	public ResponseEntity<String> create(@RequestBody ProjectDTOedit dto) {
 
-		project = projectMapper.projectDtoToProject(dto);
+		project = mapper.fromProjectDTOeditToProject(dto);
 		projectService.createProject(project);
 		return new ResponseEntity<String>("ОК ", HttpStatus.OK); // Подумай! Возврат объекта будет со всеми полями
 
@@ -46,7 +54,8 @@ public class ProjectController {
 
 		project = projectService.openProjects(id);
 		// for (Project e : listProject) {
-		dto = projectMapper.projectToProjectDto(project);
+//		dto = projectMapper.projectToProjectDto(project);
+		dto = mapper.toProjectDTO(project);
 		// listDTO.add(dto);
 		// }
 		return dto;
@@ -55,10 +64,12 @@ public class ProjectController {
 	@Transactional
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
 	@PutMapping(value = "view/edit/")
-	public ResponseEntity<String> edit(@RequestParam(required = true) Long id, @RequestBody ProjectDTO dto) {
-		project = projectMapper.projectDtoToProject(dto);
-		projectService.editProject(project);
-		return new ResponseEntity<String>("Карточка отредактирована " + project, HttpStatus.OK);
+	public ResponseEntity<String> edit(@RequestParam(required = true) Long id, @RequestBody ProjectDTOedit dto) {
+//		project = projectMapper.projectDtoToProject(dto);
+		projectService.getProject(id);
+		project = mapper.fromProjectDTOeditToProject(dto);
+		projectService.editProject(project, id);
+		return new ResponseEntity<String>("Карточка отредактирована ", HttpStatus.OK);
 	}
 
 	@Tag(name = "Удаление карточки", description = "Детальное описание будет позже")
@@ -69,40 +80,238 @@ public class ProjectController {
 		return new ResponseEntity<String>("Карточка удалена", HttpStatus.OK);
 	}
 
-	@Tag(name = "Реестр карточек", description = "1 - сортировка по дате вывода людей на проект; 2 - сортировка по наименованию проекта; 3 - сортировка в обратном порядке"
-												+ " 4 - сортировка по дате открытия; 5 - сортировка в обратном порядке;"
-												+ " 6 - сортировка по статусу проекта; 7 - сортировка в обратном порядке;"
-												+ " 8 - сортировка по дате вывода людей на проект; 9 - сортировка в обратном порядке"
-												+ " 10 - сортировка по делегированию; 11 - сортировка в обратном порядке"
-												+ " 12 - сортировка по заказчику; 13 - сортировка в обратном порядке;")
-	@GetMapping(value = "view/registry")
-	public List<ProjectDTOView> viewRegistryCards(int value) {
-		if (value == 1) {
-			return projectService.showRegistryCards();
-		} else if (value == 2) {
-			return projectService.projectDTOViewSortByProjectName();
-		} else if (value == 3) {
-			return projectService.projectDTOViewSortByProjectNameReversed();
-		} else if (value == 4) {
-			return projectService.projectDTOViewsSortByStartDate();
-		} else if (value == 5) {
-			return projectService.projectDTOViewsSortByStartDateReversed();
-		} else if (value == 6) {
-			return projectService.projectDTOViewsSortByStatus();
-		} else if (value == 7) {
-			return projectService.projectDTOViewsSortByStatusReversed();
-		} else if (value == 8) {
-			return projectService.projectDTOViewSortByDatePeopleStartWorking();
-		} else if (value == 9) {
-			return projectService.projectDTOViewSortByDatePeopleStartWorkingReversed();
-		} else if (value == 10) {
-			return projectService.projectDTOViewSortedByDelegate();
-		} else if (value == 11) {
-			return projectService.projectDTOViewSortedByDelegateReversed();
-		} else if (value == 12) {
-			return projectService.projectDTOViewSortByCompanyName();
-		} else {
-			return projectService.projectDTOViewSortByCompanyNameReversed();
+	@Tag(name = "Реестр карточек", description = "Реестр карточек - просто get; 'projectName' - сортировка по наименованию проекта; 'projectNameReversed' - сортировка в обратном порядке"
+			+ " 'createDate' - сортировка по дате создания проекта; 'createDateReversed' - сортировка в обратном порядке;"
+			+ " 'status' - сортировка по статусу проекта; 'statusReversed' - сортировка в обратном порядке;"
+			+ " 'peopleStartWorking' - сортировка по дате вывода людей на проект; 'peopleStartWorkingReversed' - сортировка в обратном порядке"
+			+ " 'delegate' - сортировка по делегированию; 'delegateReversed' - сортировка в обратном порядке"
+			+ " 'companyName' - сортировка по заказчику; 'companyNameReversed' - сортировка в обратном порядке;"
+			+ " Фильтр по автору пока не работает;")
+
+	@GetMapping(value = "view/registry/")
+	public List<ProjectDTOView> viewRegistryCards(@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(required = false) String companyNameFilter,
+			@RequestParam(required = false) String statusProjectFilter,
+			@RequestParam(required = false) String authorCardFilter) {
+
+		List<ProjectDTOView> result = projectService.showRegistryCards();
+
+		if (null != companyNameFilter && null != statusProjectFilter && null != authorCardFilter) {
+			result = projectService.showRegistryCards(); // Это переделать
+		} else if (null != companyNameFilter && null != statusProjectFilter && null == authorCardFilter) {
+
+			if ("projectName".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getProjectName))
+						.collect(Collectors.toList());
+			} else if ("projectNameReversed".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getProjectName).reversed())
+						.collect(Collectors.toList());
+			} else if ("peopleStartWorking".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getDateStartProject))
+						.collect(Collectors.toList());
+			} else if ("peopleStartWorkingReversed".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
+						.collect(Collectors.toList());
+			} else if ("status".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getStatusValue))
+						.collect(Collectors.toList());
+			} else if ("statusReversed".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getStatusValue).reversed())
+						.collect(Collectors.toList());
+			} else if ("createDate".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getDateTimeCreate))
+						.collect(Collectors.toList());
+			} else if ("createDateReversed".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
+						.collect(Collectors.toList());
+			} else if ("delegate".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::isDelegated))
+						.collect(Collectors.toList());
+			} else if ("delegateReversed".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::isDelegated).reversed())
+						.collect(Collectors.toList());
+			} else if ("companyName".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getCompanyName))
+						.collect(Collectors.toList());
+			} else if ("companyNameReversed".equals(sort)) {
+				result = projectService
+						.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter)
+						.stream().sorted(java.util.Comparator.comparing(ProjectDTOView::getCompanyName).reversed())
+						.collect(Collectors.toList());
+			} else {
+				result = projectService.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter,
+						statusProjectFilter);
+			}
+
+			result = projectService.projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter,
+					statusProjectFilter);
+		} else if (null != companyNameFilter && null == statusProjectFilter && null == authorCardFilter) {
+
+			if ("projectName".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getProjectName))
+						.collect(Collectors.toList());
+			} else if ("projectNameReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getProjectName).reversed())
+						.collect(Collectors.toList());
+			} else if ("peopleStartWorking".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getDateStartProject))
+						.collect(Collectors.toList());
+			} else if ("peopleStartWorkingReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
+						.collect(Collectors.toList());
+			} else if ("status".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getStatusValue))
+						.collect(Collectors.toList());
+			} else if ("statusReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getStatusValue).reversed())
+						.collect(Collectors.toList());
+			} else if ("createDate".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getDateTimeCreate))
+						.collect(Collectors.toList());
+			} else if ("createDateReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
+						.collect(Collectors.toList());
+			} else if ("delegate".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::isDelegated))
+						.collect(Collectors.toList());
+			} else if ("delegateReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::isDelegated).reversed())
+						.collect(Collectors.toList());
+			} else if ("companyName".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getCompanyName))
+						.collect(Collectors.toList());
+			} else if ("companyNameReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getCompanyName).reversed())
+						.collect(Collectors.toList());
+			} else {
+				result = projectService.projectDTOViewFilterByCompanyName(companyNameFilter);
+			}
+
+		} else if (null != companyNameFilter && null != authorCardFilter && null == statusProjectFilter) {
+			result = projectService.showRegistryCards(); // Это переделать
+		} else if (null != statusProjectFilter && null != authorCardFilter && null == companyNameFilter) {
+			result = projectService.showRegistryCards(); // Это переделать
+		} else if (null != statusProjectFilter && null == authorCardFilter && null == companyNameFilter) {
+
+			if ("projectName".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getProjectName))
+						.collect(Collectors.toList());
+			} else if ("projectNameReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getProjectName).reversed())
+						.collect(Collectors.toList());
+			} else if ("peopleStartWorking".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getDateStartProject))
+						.collect(Collectors.toList());
+			} else if ("peopleStartWorkingReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
+						.collect(Collectors.toList());
+			} else if ("status".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getStatusValue))
+						.collect(Collectors.toList());
+			} else if ("statusReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getStatusValue).reversed())
+						.collect(Collectors.toList());
+			} else if ("createDate".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getDateTimeCreate))
+						.collect(Collectors.toList());
+			} else if ("createDateReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
+						.collect(Collectors.toList());
+			} else if ("delegate".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::isDelegated))
+						.collect(Collectors.toList());
+			} else if ("delegateReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::isDelegated).reversed())
+						.collect(Collectors.toList());
+			} else if ("companyName".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getCompanyName))
+						.collect(Collectors.toList());
+			} else if ("companyNameReversed".equals(sort)) {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
+						.sorted(java.util.Comparator.comparing(ProjectDTOView::getCompanyName).reversed())
+						.collect(Collectors.toList());
+			} else {
+				result = projectService.projectDTOViewFilterByStatusProject(statusProjectFilter);
+			}
+
+		} else if (null != authorCardFilter && null == statusProjectFilter && null == companyNameFilter) {
+			result = projectService.showRegistryCards(); // Это переделать
+		} else if (null == companyNameFilter && null == statusProjectFilter && null == authorCardFilter) {
+
+			if ("projectName".equals(sort)) {
+				result = projectService.projectDTOViewSortByProjectName();
+			} else if ("projectNameReversed".equals(sort)) {
+				result = projectService.projectDTOViewSortByProjectNameReversed();
+			} else if ("createDate".equals(sort)) {
+				result = projectService.projectDTOViewsSortByStartDate();
+			} else if ("createDateReversed".equals(sort)) {
+				result = projectService.projectDTOViewsSortByStartDateReversed();
+			} else if ("status".equals(sort)) {
+				result = projectService.projectDTOViewsSortByStatus();
+			} else if ("statusReversed".equals(sort)) {
+				result = projectService.projectDTOViewsSortByStatusReversed();
+			} else if ("peopleStartWorking".equals(sort)) {
+				result = projectService.projectDTOViewSortByDatePeopleStartWorking();
+			} else if ("peopleStartWorkingReversed".equals(sort)) {
+				result = projectService.projectDTOViewSortByDatePeopleStartWorkingReversed();
+			} else if ("delegate".equals(sort)) {
+				result = projectService.projectDTOViewSortedByDelegate();
+			} else if ("delegateReversed".equals(sort)) {
+				result = projectService.projectDTOViewSortedByDelegateReversed();
+			} else if ("companyName".equals(sort)) {
+				result = projectService.projectDTOViewSortByCompanyName();
+			} else if ("companyNameReversed".equals(sort)) {
+				result = projectService.projectDTOViewSortByCompanyNameReversed();
+			} else {
+				result = projectService.showRegistryCards();
+			}
 		}
+
+		return result;
 	}
 }

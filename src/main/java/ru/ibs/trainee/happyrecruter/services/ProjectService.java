@@ -11,7 +11,7 @@ public interface ProjectService {
 	Project getProject(Long id);
 	Project openProjects(Long id);
 	Project createProject(Project Project);
-	Project editProject(Project project);	
+	Project editProject(Project project, Long id);	
 	void deleteProject(Long id);
 	List<ProjectDTOView> projectDTOViewSortByProjectName();
 	List<ProjectDTOView> projectDTOViewsSortByStartDate();
@@ -26,5 +26,8 @@ public interface ProjectService {
 	List<ProjectDTOView> projectDTOViewSortedByDelegateReversed();
 	List<ProjectDTOView> projectDTOViewSortByCompanyName();
 	List<ProjectDTOView> projectDTOViewSortByCompanyNameReversed();
+	List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilter(String companyNameFilter, String statusProjectFilter);
+	List<ProjectDTOView> projectDTOViewFilterByCompanyName(String companyNameFilter);
+	List<ProjectDTOView> projectDTOViewFilterByStatusProject(String statusProjectFilter);
 
 }

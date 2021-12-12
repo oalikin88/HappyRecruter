@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import ru.ibs.trainee.happyrecruter.entities.Methodology;
 import ru.ibs.trainee.happyrecruter.entities.Overtime;
-import ru.ibs.trainee.happyrecruter.entities.Person;
+import ru.ibs.trainee.happyrecruter.entities.User;
 import ru.ibs.trainee.happyrecruter.entities.ProjectStatus;
 import ru.ibs.trainee.happyrecruter.entities.StaffList;
 import ru.ibs.trainee.happyrecruter.entities.Stage;

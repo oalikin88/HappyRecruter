@@ -42,7 +42,7 @@ public class Project {
     private boolean isDelegated;
     private boolean isProductProject;
     private boolean hasDesigners;
-    private boolean hasAnotherSpecialists;
+    private String hasAnotherSpecialists;
     @ManyToOne
     @JoinColumn(name = "id_type1")
     private Type1 idType1;
@@ -66,7 +66,7 @@ public class Project {
     private Methodology idMethodology;
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private Person person;
+    private User user;
     @ManyToOne
     @JoinColumn(name = "subjectArea_id")
     private SubjectArea subjectArea;

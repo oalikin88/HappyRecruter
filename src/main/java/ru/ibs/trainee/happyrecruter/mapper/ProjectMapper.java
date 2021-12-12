@@ -18,53 +18,52 @@ import ru.ibs.trainee.happyrecruter.entities.Type4;
 
 @Component
 public class ProjectMapper {
-	@Autowired
-	Type1 type1;
+	
 	
 	
 	public Project projectDtoToProject(ProjectDTO dto) {
 		Project project = new Project();
-		project.setId(dto.getId());
-		project.setDateTimeCreate(dto.getDateTimeCreate());
-		project.setCompanyName(dto.getCompanyName());
-		project.setProjectName(dto.getProjectName());
-		project.setLocation(dto.getLocation());		
-		project.setFunctionalArea(dto.getFunctionalArea());
-		project.setDescription(dto.getDescription());
-		project.setProjectTasks(dto.getProjectTasks());
-		project.setDateCloseProject(dto.getDateCloseProject());
-		project.setStakeholders(dto.getStakeholders());
-		project.setProcedureEnteringStaff(dto.getProcedureEnteringStaff());
-		project.setTechnologies(dto.getTechnologies());
-		project.setDocumentated(dto.isDocumentated());
-		project.setWorkHome(dto.isWorkHome());
-		project.setDelegated(dto.isDelegated());
-		project.setProductProject(dto.isProductProject());
-		project.setHasDesigners(dto.isHasDesigners());
-		project.setHasAnotherSpecialists(dto.isHasAnotherSpecialists());
-		project.setProjectStatus(new ProjectStatus(dto.getIdProjectStatus(), dto.getProjectStatus()));
-		project.setIdStage(new Stage(dto.getIdStage(), dto.getStage()));
-		project.setIdOvertime(new Overtime(dto.getIdOvertime(), dto.getOvertime()));
-		project.setIdMethodology(new Methodology(dto.getIdMethodology(), dto.getMethodology()));
-		project.setSubjectArea(new SubjectArea(dto.getIdSubjectArea(), dto.getSubjectArea()));
+			project.setId(dto.getId());
+			project.setDateTimeCreate(dto.getDateTimeCreate());
+			project.setCompanyName(dto.getCompanyName());
+			project.setProjectName(dto.getProjectName());
+			project.setLocation(dto.getLocation());		
+			project.setFunctionalArea(dto.getFunctionalArea());
+			project.setDescription(dto.getDescription());
+			project.setProjectTasks(dto.getProjectTasks());
+			project.setDateCloseProject(dto.getDateCloseProject());
+			project.setStakeholders(dto.getStakeholders());
+			project.setProcedureEnteringStaff(dto.getProcedureEnteringStaff());
+			project.setTechnologies(dto.getTechnologies());
+			project.setDocumentated(dto.isDocumentated());
+			project.setWorkHome(dto.isWorkHome());
+			project.setDelegated(dto.isDelegated());
+			project.setProductProject(dto.isProductProject());
+			project.setHasDesigners(dto.isHasDesigners());
+			project.setHasAnotherSpecialists(dto.getHasAnotherSpecialists());
+			project.setProjectStatus(new ProjectStatus(dto.getIdProjectStatus(), dto.getProjectStatus()));
+			project.setIdStage(new Stage(dto.getIdStage(), dto.getStage()));
+			project.setIdOvertime(new Overtime(dto.getIdOvertime(), dto.getOvertime()));
+			project.setIdMethodology(new Methodology(dto.getIdMethodology(), dto.getMethodology()));
+			project.setSubjectArea(new SubjectArea(dto.getIdSubjectArea(), dto.getSubjectArea()));
+			project.setIdType1(new Type1(dto.getIdType1(), dto.getType1()));
+			project.setIdType2(new Type2(dto.getIdType2(), dto.getType2()));
+			project.setIdType3(new Type3(dto.getIdType3(), dto.getType3()));
+			project.setIdType4(new Type4(dto.getIdType4(), dto.getType4()));
+			project.setMemberTeam1(new MemberTeam(dto.getIdMemberTeam1(), dto.getCountNeeds1(), dto.getCountHired1(),
+					dto.getDateStartProject1()));
+			project.setMemberTeam2(new MemberTeam(dto.getIdMemberTeam2(), dto.getCountNeeds2(), dto.getCountHired2(),
+					dto.getDateStartProject2()));
+			project.setMemberTeam3(new MemberTeam(dto.getIdMemberTeam3(), dto.getCountNeeds3(), dto.getCountHired3(),
+					dto.getDateStartProject3()));
+			project.setMemberTeam4(new MemberTeam(dto.getIdMemberTeam4(), dto.getCountNeeds4(), dto.getCountHired4(),
+					dto.getDateStartProject4()));
+			project.setMemberTeam5(new MemberTeam(dto.getIdMemberTeam5(), dto.getCountNeeds5(), dto.getCountHired5(),
+					dto.getDateStartProject5()));
+			project.setMemberTeam6(new MemberTeam(dto.getIdMemberTeam6(), dto.getCountNeeds6(), dto.getCountHired6(),
+					dto.getDateStartProject6()));
 		
-	
-		project.setIdType1(new Type1(dto.getIdType1(), dto.getType1()));
-		project.setIdType2(new Type2(dto.getIdType2(), dto.getType2()));
-		project.setIdType3(new Type3(dto.getIdType3(), dto.getType3()));
-		project.setIdType4(new Type4(dto.getIdType4(), dto.getType4()));
-		project.setMemberTeam1(new MemberTeam(dto.getIdMemberTeam1(), dto.getCountNeeds1(), dto.getCountHired1(),
-				dto.getDateStartProject1()));
-		project.setMemberTeam2(new MemberTeam(dto.getIdMemberTeam2(), dto.getCountNeeds2(), dto.getCountHired2(),
-				dto.getDateStartProject2()));
-		project.setMemberTeam3(new MemberTeam(dto.getIdMemberTeam3(), dto.getCountNeeds3(), dto.getCountHired3(),
-				dto.getDateStartProject3()));
-		project.setMemberTeam4(new MemberTeam(dto.getIdMemberTeam4(), dto.getCountNeeds4(), dto.getCountHired4(),
-				dto.getDateStartProject4()));
-		project.setMemberTeam5(new MemberTeam(dto.getIdMemberTeam5(), dto.getCountNeeds5(), dto.getCountHired5(),
-				dto.getDateStartProject5()));
-		project.setMemberTeam6(new MemberTeam(dto.getIdMemberTeam6(), dto.getCountNeeds6(), dto.getCountHired6(),
-				dto.getDateStartProject6()));
+		
 		
 		return project;
 	}
@@ -88,10 +87,10 @@ public class ProjectMapper {
 		dto.setDelegated(project.isDelegated());
 		dto.setProductProject(project.isProductProject());
 		dto.setHasDesigners(project.isHasDesigners());
-		dto.setHasAnotherSpecialists(project.isHasAnotherSpecialists());
+		dto.setHasAnotherSpecialists(project.getHasAnotherSpecialists());
 		
 		dto.setIdProjectStatus(project.getProjectStatus().getId());
-		dto.setProjectStatus(project.getProjectStatus().getName());
+		dto.setProjectStatus(project.getProjectStatus().getStatusValue());
 		
 		dto.setIdStage(project.getIdStage().getId());
 		dto.setStage(project.getIdStage().getStageName());
@@ -154,48 +153,49 @@ public class ProjectMapper {
 	
 	public Project projectDtoToProjectEdit(ProjectDTO dto) {
 		Project project = new Project();
-		project.setId(dto.getId());
-		project.setDateTimeCreate(dto.getDateTimeCreate());
-		project.setCompanyName(dto.getCompanyName());
-		project.setProjectName(dto.getProjectName());
-		project.setLocation(dto.getLocation());		
-		project.setFunctionalArea(dto.getFunctionalArea());
-		project.setDescription(dto.getDescription());
-		project.setProjectTasks(dto.getProjectTasks());
-		project.setDateCloseProject(dto.getDateCloseProject());
-		project.setStakeholders(dto.getStakeholders());
-		project.setProcedureEnteringStaff(dto.getProcedureEnteringStaff());
-		project.setTechnologies(dto.getTechnologies());
-		project.setDocumentated(dto.isDocumentated());
-		project.setWorkHome(dto.isWorkHome());
-		project.setDelegated(dto.isDelegated());
-		project.setProductProject(dto.isProductProject());
-		project.setHasDesigners(dto.isHasDesigners());
-		project.setHasAnotherSpecialists(dto.isHasAnotherSpecialists());
-		project.setProjectStatus(new ProjectStatus(dto.getIdProjectStatus(), dto.getProjectStatus()));
-		project.setIdStage(new Stage(dto.getIdStage(), dto.getStage()));
-		project.setIdOvertime(new Overtime(dto.getIdOvertime(), dto.getOvertime()));
-		project.setIdMethodology(new Methodology(dto.getIdMethodology(), dto.getMethodology()));
-		project.setSubjectArea(new SubjectArea(dto.getIdSubjectArea(), dto.getSubjectArea()));
+			project.setId(dto.getId());
+			project.setDateTimeCreate(dto.getDateTimeCreate());
+			project.setCompanyName(dto.getCompanyName());
+			project.setProjectName(dto.getProjectName());
+			project.setLocation(dto.getLocation());		
+			project.setFunctionalArea(dto.getFunctionalArea());
+			project.setDescription(dto.getDescription());
+			project.setProjectTasks(dto.getProjectTasks());
+			project.setDateCloseProject(dto.getDateCloseProject());
+			project.setStakeholders(dto.getStakeholders());
+			project.setProcedureEnteringStaff(dto.getProcedureEnteringStaff());
+			project.setTechnologies(dto.getTechnologies());
+			project.setDocumentated(dto.isDocumentated());
+			project.setWorkHome(dto.isWorkHome());
+			project.setDelegated(dto.isDelegated());
+			project.setProductProject(dto.isProductProject());
+			project.setHasDesigners(dto.isHasDesigners());
+			project.setHasAnotherSpecialists(dto.getHasAnotherSpecialists());
+			project.setProjectStatus(new ProjectStatus(dto.getIdProjectStatus(), dto.getProjectStatus()));
+			project.setIdStage(new Stage(dto.getIdStage(), dto.getStage()));
+			project.setIdOvertime(new Overtime(dto.getIdOvertime(), dto.getOvertime()));
+			project.setIdMethodology(new Methodology(dto.getIdMethodology(), dto.getMethodology()));
+			project.setSubjectArea(new SubjectArea(dto.getIdSubjectArea(), dto.getSubjectArea()));
+			
 		
+			project.setIdType1(new Type1(dto.getIdType1(), dto.getType1()));
+			project.setIdType2(new Type2(dto.getIdType2(), dto.getType2()));
+			project.setIdType3(new Type3(dto.getIdType3(), dto.getType3()));
+			project.setIdType4(new Type4(dto.getIdType4(), dto.getType4()));
+			
+			project.setMemberTeam1(new MemberTeam(dto.getIdMemberTeam1(), dto.getCountNeeds1(), dto.getCountHired1(),
+					dto.getDateStartProject1()));
+			project.setMemberTeam2(new MemberTeam(dto.getIdMemberTeam2(), dto.getCountNeeds2(), dto.getCountHired2(),
+					dto.getDateStartProject2()));
+			project.setMemberTeam3(new MemberTeam(dto.getIdMemberTeam3(), dto.getCountNeeds3(), dto.getCountHired3(),
+					dto.getDateStartProject3()));
+			project.setMemberTeam4(new MemberTeam(dto.getIdMemberTeam4(), dto.getCountNeeds4(), dto.getCountHired4(),
+					dto.getDateStartProject4()));
+			project.setMemberTeam5(new MemberTeam(dto.getIdMemberTeam5(), dto.getCountNeeds5(), dto.getCountHired5(),
+					dto.getDateStartProject5()));
+			project.setMemberTeam6(new MemberTeam(dto.getIdMemberTeam6(), dto.getCountNeeds6(), dto.getCountHired6(),
+					dto.getDateStartProject6()));
 	
-		project.setIdType1(new Type1(dto.getIdType1(), dto.getType1()));
-		project.setIdType2(new Type2(dto.getIdType2(), dto.getType2()));
-		project.setIdType3(new Type3(dto.getIdType3(), dto.getType3()));
-		project.setIdType4(new Type4(dto.getIdType4(), dto.getType4()));
-		
-		project.setMemberTeam1(new MemberTeam(dto.getIdMemberTeam1(), dto.getCountNeeds1(), dto.getCountHired1(),
-				dto.getDateStartProject1()));
-		project.setMemberTeam2(new MemberTeam(dto.getIdMemberTeam2(), dto.getCountNeeds2(), dto.getCountHired2(),
-				dto.getDateStartProject2()));
-		project.setMemberTeam3(new MemberTeam(dto.getIdMemberTeam3(), dto.getCountNeeds3(), dto.getCountHired3(),
-				dto.getDateStartProject3()));
-		project.setMemberTeam4(new MemberTeam(dto.getIdMemberTeam4(), dto.getCountNeeds4(), dto.getCountHired4(),
-				dto.getDateStartProject4()));
-		project.setMemberTeam5(new MemberTeam(dto.getIdMemberTeam5(), dto.getCountNeeds5(), dto.getCountHired5(),
-				dto.getDateStartProject5()));
-		project.setMemberTeam6(new MemberTeam(dto.getIdMemberTeam6(), dto.getCountNeeds6(), dto.getCountHired6(),
-				dto.getDateStartProject6()));
 		
 		return project;
 	}

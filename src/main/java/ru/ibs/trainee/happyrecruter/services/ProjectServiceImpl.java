@@ -56,7 +56,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 		project.setDateTimeCreate(LocalDateTime.now());
 
-		ProjectStatus status = projectStatusRepository.findByNameIs(project.getProjectStatus().getName());
+		ProjectStatus status = projectStatusRepository.findByStatusValue(project.getProjectStatus().getStatusValue());
 		project.setProjectStatus(status);
 
 		SubjectArea subjectArea = subjectAreaRepository.findByNameIs(project.getSubjectArea().getName());
@@ -123,10 +123,10 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public Project editProject(Project project) {
+	public Project editProject(Project project, Long id) {
 
-		Project editProject = projectRepository.findById(project.getId()).get();
-
+		
+		Project editProject = projectRepository.findById(id).get();
 		if (!project.getCompanyName().equals(editProject.getCompanyName())) {
 			editProject.setCompanyName(project.getCompanyName());
 		}
@@ -172,30 +172,42 @@ public class ProjectServiceImpl implements ProjectService {
 		if (project.isHasDesigners() != editProject.isHasDesigners()) {
 			editProject.setHasDesigners(project.isHasDesigners());
 		}
-		if (project.isHasAnotherSpecialists() != editProject.isHasAnotherSpecialists()) {
-			editProject.setHasAnotherSpecialists(project.isHasAnotherSpecialists());
+		if (project.getHasAnotherSpecialists() != editProject.getHasAnotherSpecialists()) {
+			editProject.setHasAnotherSpecialists(project.getHasAnotherSpecialists());
 		}
 
 		if (!project.getMemberTeam1().equals(editProject.getMemberTeam1())) {
-			editProject.setMemberTeam1(project.getMemberTeam1());
+			editProject.getMemberTeam1().setCountHired(project.getMemberTeam1().getCountHired());
+			editProject.getMemberTeam1().setCountNeeds(project.getMemberTeam1().getCountNeeds());
+			editProject.getMemberTeam1().setDateStartProject(project.getMemberTeam1().getDateStartProject());
 		}
 		if (!project.getMemberTeam2().equals(editProject.getMemberTeam2())) {
-			editProject.setMemberTeam2(project.getMemberTeam2());
+			editProject.getMemberTeam2().setCountHired(project.getMemberTeam2().getCountHired());
+			editProject.getMemberTeam2().setCountNeeds(project.getMemberTeam2().getCountNeeds());
+			editProject.getMemberTeam2().setDateStartProject(project.getMemberTeam2().getDateStartProject());
 		}
 		if (!project.getMemberTeam3().equals(editProject.getMemberTeam3())) {
-			editProject.setMemberTeam3(project.getMemberTeam3());
+			editProject.getMemberTeam3().setCountHired(project.getMemberTeam3().getCountHired());
+			editProject.getMemberTeam3().setCountNeeds(project.getMemberTeam3().getCountNeeds());
+			editProject.getMemberTeam3().setDateStartProject(project.getMemberTeam3().getDateStartProject());
 		}
 		if (!project.getMemberTeam4().equals(editProject.getMemberTeam4())) {
-			editProject.setMemberTeam4(project.getMemberTeam4());
+			editProject.getMemberTeam4().setCountHired(project.getMemberTeam4().getCountHired());
+			editProject.getMemberTeam4().setCountNeeds(project.getMemberTeam4().getCountNeeds());
+			editProject.getMemberTeam4().setDateStartProject(project.getMemberTeam4().getDateStartProject());
 		}
 		if (!project.getMemberTeam5().equals(editProject.getMemberTeam5())) {
-			editProject.setMemberTeam5(project.getMemberTeam5());
+			editProject.getMemberTeam5().setCountHired(project.getMemberTeam5().getCountHired());
+			editProject.getMemberTeam5().setCountNeeds(project.getMemberTeam5().getCountNeeds());
+			editProject.getMemberTeam5().setDateStartProject(project.getMemberTeam5().getDateStartProject());
 		}
 		if (!project.getMemberTeam6().equals(editProject.getMemberTeam6())) {
-			editProject.setMemberTeam6(project.getMemberTeam6());
+			editProject.getMemberTeam6().setCountHired(project.getMemberTeam6().getCountHired());
+			editProject.getMemberTeam6().setCountNeeds(project.getMemberTeam6().getCountNeeds());
+			editProject.getMemberTeam6().setDateStartProject(project.getMemberTeam6().getDateStartProject());
 		}
-		if (!project.getProjectStatus().getName().equals(editProject.getProjectStatus().getName())) {
-			editProject.setProjectStatus(projectStatusRepository.findByNameIs(project.getProjectStatus().getName()));
+		if (!project.getProjectStatus().getStatusValue().equals(editProject.getProjectStatus().getStatusValue())) {
+			editProject.setProjectStatus(projectStatusRepository.findProjectStatusByStatusValue(project.getProjectStatus().getStatusValue()));
 		}
 
 		if (!project.getSubjectArea().getName().equals(editProject.getSubjectArea().getName())) {
@@ -247,7 +259,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<ProjectDTOView> showRegistryCards() {
 		List<ProjectDTOView> listDTO = new ArrayList<>();
-		
+
 		List<Project> list = projectRepository.findAll();
 		for (Project pr : list) {
 			projectDTOView = dtoViewMapper.projectToProjectDTOView(pr);
@@ -264,59 +276,79 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		return listDTO;
 	}
+	
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilter(String companyNameFilter, String statusProjectFilter) {
+		return showRegistryCards().stream().filter(t -> t.getCompanyName().equals(companyNameFilter)).filter(t -> t.getStatusValue().equals(statusProjectFilter))
+				.collect(Collectors.toList());
+	}
+	
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyName(String companyNameFilter) {
+		return showRegistryCards().stream().filter(t -> t.getCompanyName().equals(companyNameFilter)).collect(Collectors.toList());
+	}
+	public List<ProjectDTOView> projectDTOViewFilterByStatusProject(String statusProjectFilter) {
+		return showRegistryCards().stream().filter(t -> t.getStatusValue().equals(statusProjectFilter)).collect(Collectors.toList());
+	}
 
 	public List<ProjectDTOView> projectDTOViewSortByProjectName() {
 		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName))
-		.collect(Collectors.toList());
+				.collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewSortByProjectNameReversed() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName)
-		.reversed()).collect(Collectors.toList());
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName).reversed())
+				.collect(Collectors.toList());
 	}
-	
 
 	public List<ProjectDTOView> projectDTOViewsSortByStartDate() {
 		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate))
-		.collect(Collectors.toList());
+				.collect(Collectors.toList());
 	}
 
 	public List<ProjectDTOView> projectDTOViewsSortByStartDateReversed() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate)
-		.reversed()).collect(Collectors.toList());
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
+				.collect(Collectors.toList());
 	}
 
 	public List<ProjectDTOView> projectDTOViewsSortByStatus() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectStatus))
-		.collect(Collectors.toList());
-	}
-	public List<ProjectDTOView> projectDTOViewsSortByStatusReversed() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectStatus)
-		.reversed()).collect(Collectors.toList());
-	}
-	public List<ProjectDTOView> projectDTOViewSortByDatePeopleStartWorking() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject))
-		.collect(Collectors.toList());
-	}
-	public List<ProjectDTOView> projectDTOViewSortByDatePeopleStartWorkingReversed() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject)
-		.reversed()).collect(Collectors.toList());
-	}
-	public List<ProjectDTOView> projectDTOViewSortedByDelegate() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated)).
-		collect(Collectors.toList());
-	}
-	public List<ProjectDTOView> projectDTOViewSortedByDelegateReversed() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed())
-		.collect(Collectors.toList());
-	}
-	public List<ProjectDTOView> projectDTOViewSortByCompanyName() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName))
-		.collect(Collectors.toList());
-	}
-	public List<ProjectDTOView> projectDTOViewSortByCompanyNameReversed() {
-		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed())
-		.collect(Collectors.toList());
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getStatusValue))
+				.collect(Collectors.toList());
 	}
 
+	public List<ProjectDTOView> projectDTOViewsSortByStatusReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getStatusValue).reversed())
+				.collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewSortByDatePeopleStartWorking() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject))
+				.collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewSortByDatePeopleStartWorkingReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
+				.collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewSortedByDelegate() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated))
+				.collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewSortedByDelegateReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed())
+				.collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewSortByCompanyName() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName))
+				.collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewSortByCompanyNameReversed() {
+		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed())
+				.collect(Collectors.toList());
+	}
+	
+	
 
 }
