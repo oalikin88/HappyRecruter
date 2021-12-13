@@ -26,6 +26,7 @@ public class ProjectDTOView {
 	private String projectName;
 	private String statusValue;
 	private boolean isDelegated;
+	private String fio;
 	@JsonDeserialize
 	private LocalDate dateStartProject;
 	@Override
