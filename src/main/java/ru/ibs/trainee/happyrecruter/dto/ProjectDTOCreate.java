@@ -1,8 +1,11 @@
 package ru.ibs.trainee.happyrecruter.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 
 public class ProjectDTOCreate extends ProjectDTO {
 	@JsonIgnore
@@ -39,5 +42,7 @@ public class ProjectDTOCreate extends ProjectDTO {
 	private Long idMemberTeam6;
 	@JsonIgnore
 	private LocalDate dateStartProject6;
+	@JsonIgnore
+	private LocalDateTime DateTimeCreate;
 	
 }

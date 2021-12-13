@@ -4,21 +4,19 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "persons")
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "users")
 @Setter
 @Getter
-public class Person {
+public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String login;
+    @Column(nullable = false, unique = true)
+    private String username;
     private String password;
     private String fio;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -30,12 +28,12 @@ public class Person {
 
     public void addRole(Role role) {
         roles.add(role);
-        role.getPersons().add(this);
+        role.getUsers().add(this);
     }
 
     public void removeRole(Role role) {
         roles.remove(role);
-        role.getPersons().remove(this);
+        role.getUsers().remove(this);
     }
 
     // здесь ещё переопределяют методы equals и hashcode

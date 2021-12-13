@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-public class ProjectDTO {
+public class ProjectDTOcopy {
 	private Long id;
 	private LocalDateTime DateTimeCreate;
 	private Long idProjectStatus;

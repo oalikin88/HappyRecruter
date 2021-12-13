@@ -38,3 +38,7 @@ logs/
 
 ### VS Code ###
 .vscode/
+
+### Eclipse ###
+.dbeaver
+
