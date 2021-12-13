@@ -656,7 +656,7 @@ public class ProjectServiceImpl implements ProjectService {
 	// Фильтр по заказчику
 
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyName(String companyNameFilter) {
-		return showRegistryCards().stream().filter(t -> t.getCompanyName().equals(companyNameFilter))
+		return showRegistryCards().stream().filter(t -> t.getCompanyName().contains(companyNameFilter))
 				.collect(Collectors.toList());
 	}
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByProjectName(String companyNameFilter) {

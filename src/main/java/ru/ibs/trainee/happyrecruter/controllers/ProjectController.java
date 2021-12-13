@@ -11,18 +11,17 @@ import ru.ibs.trainee.happyrecruter.dto.ProjectDTO;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOedit;
 import ru.ibs.trainee.happyrecruter.entities.*;
-import ru.ibs.trainee.happyrecruter.mapper.ProjectMapper;
 import ru.ibs.trainee.happyrecruter.mapper.ProjectMapperTest;
 import ru.ibs.trainee.happyrecruter.services.ProjectService;
 
 @RestController
+@CrossOrigin(origins = "*",
+methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("project/")
 public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
-	@Autowired
-	ProjectMapper projectMapper;
 	@Autowired
 	ProjectMapperTest mapper;
 	@Autowired
@@ -30,17 +29,17 @@ public class ProjectController {
 	@Autowired
 	ProjectDTO dto;
 
-	@CrossOrigin
+
 	@Tag(name = "Создание проекта", description = "Детальное описание будет позже")
 	@PostMapping("create")
-	public ResponseEntity<String> create(@RequestBody ProjectDTOedit dto) {
+	public ResponseEntity<ProjectDTOedit> create(@RequestBody ProjectDTOedit dto) {
 		project = mapper.fromProjectDTOeditToProject(dto);
 		projectService.createProject(project);
-		return new ResponseEntity<String>("ОК ", HttpStatus.OK);
+		return new ResponseEntity<ProjectDTOedit>(dto, HttpStatus.OK);
 
 	}
 
-	@CrossOrigin
+
 	@Tag(name = "Просмотр карточки", description = "Детальное описание будет позже")
 	@GetMapping(value = "view/{id}")
 	public ProjectDTO show(@PathVariable(name = "id") Long id) {
@@ -49,7 +48,6 @@ public class ProjectController {
 		return dto;
 	}
 
-	@CrossOrigin
 	@Transactional
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
 	@PutMapping(value = "view/edit/")
@@ -60,7 +58,6 @@ public class ProjectController {
 		return new ResponseEntity<String>("Карточка отредактирована ", HttpStatus.OK);
 	}
 
-	@CrossOrigin
 	@Tag(name = "Удаление карточки", description = "Детальное описание будет позже")
 	@PostMapping(value = "view/delete")
 	public ResponseEntity<String> delete(@RequestParam(required = true) Long id) {
@@ -69,7 +66,6 @@ public class ProjectController {
 		return new ResponseEntity<String>("Карточка удалена", HttpStatus.OK);
 	}
 
-	@CrossOrigin
 	@Tag(name = "Реестр карточек", description = "Реестр карточек - просто get; 'projectName' - сортировка по наименованию проекта; 'projectNameReversed' - сортировка в обратном порядке"
 			+ " 'createDate' - сортировка по дате создания проекта; 'createDateReversed' - сортировка в обратном порядке;"
 			+ " 'status' - сортировка по статусу проекта; 'statusReversed' - сортировка в обратном порядке;"

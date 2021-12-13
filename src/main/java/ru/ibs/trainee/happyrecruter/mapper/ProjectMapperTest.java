@@ -33,6 +33,7 @@ public class ProjectMapperTest {
 		return mapper.map(project, ProjectDTO.class);
 	}
 	
+	
 	public ProjectDTOedit toProjectDTOedit(Project project) {
 		ModelMapper mapper = new ModelMapper();
 		mapper.addMappings(new PropertyMap<Project, ProjectDTOedit>() {
@@ -84,4 +85,6 @@ public class ProjectMapperTest {
 		});
 		return mapper.map(dto, Project.class);
 	}
+	
+	
 }
