@@ -1,0 +1,97 @@
+stages:
+    - check variables
+    - docker image build
+    - docker image push
+    - helm chart build
+    - helm chart push
+    - openshift deploy
+
+variables:
+    DOCKER_REPOSITORY: 'docker.trainee.ru.com'
+    CURRENT_PROJECT_NAME: 'team-4-back'
+    CURRENT_PROJECT_GROUP: 'team-4'
+    HELM_REPOSITORY: 'https://repo.trainee.ru.com/repository/helm'
+    HELM_REPO_LOCAL_NAME: 'team-4-back-helmrepo'
+
+docker image build:
+    stage: docker image build
+    before_script:
+        - export VERSION=$(grep 'version =' ./build.gradle | cut -d "'" -f 2 | cut -d "-" -f 1)
+        - echo "VERSION':'                     ${VERSION};"
+        - echo "DOCKER_REPOSITORY':'           ${DOCKER_REPOSITORY};"
+        - echo "CURRENT_PROJECT_NAME':'        ${CURRENT_PROJECT_NAME}."
+    script:
+        - docker build -t ${DOCKER_REPOSITORY}/${CURRENT_PROJECT_NAME}:${VERSION} .
+        - docker tag ${DOCKER_REPOSITORY}/${CURRENT_PROJECT_NAME}:${VERSION} ${DOCKER_REPOSITORY}/${CURRENT_PROJECT_NAME}
+        - rm -rf ./target
+
+docker image push:
+    stage: docker image push
+    dependencies: [docker image build]
+    before_script:
+        - echo "DOCKER_REPOSITORY':'           ${DOCKER_REPOSITORY};"
+        - echo "CURRENT_PROJECT_NAME':'        ${CURRENT_PROJECT_NAME};"
+        - export VERSION=$(grep 'version =' ./build.gradle | cut -d "'" -f 2 | cut -d "-" -f 1)
+        - echo "VERSION':'                     ${VERSION}."
+    script:
+        - docker login ${DOCKER_REPOSITORY} -u ${NEXUS_LOGIN} -p ${NEXUS_PASSWORD}
+        - docker push -a ${DOCKER_REPOSITORY}/${CURRENT_PROJECT_NAME}
+        - docker rmi ${DOCKER_REPOSITORY}/${CURRENT_PROJECT_NAME}:${VERSION}
+        - docker rmi ${DOCKER_REPOSITORY}/${CURRENT_PROJECT_NAME}
+
+helm chart build:
+    stage: helm chart build
+    dependencies: [docker image build]
+    before_script:
+        - export VERSION=$(grep 'version =' ./build.gradle | cut -d "'" -f 2 | cut -d "-" -f 1)
+        - export PORT=$(grep EXPOSE Dockerfile | cut -d' ' -f2)
+        - echo "-------------"
+        - echo "CURRENT_PROJECT_NAME':'        ${CURRENT_PROJECT_NAME};"
+        - echo "PORT':'                        ${PORT};"
+        - echo "VERSION':'                     ${VERSION};"
+        - echo "HELM_REPOSITORY':'             ${HELM_REPOSITORY}."
+        - echo "-------------"
+    script:
+        - helm create --debug ${CURRENT_PROJECT_NAME}
+        - sed -i "s/EXPOSE_PORT/${PORT}/g" template/values.yaml
+        - sed -i "s/CI_PROJECT_NAME/${CURRENT_PROJECT_NAME}/g" template/values.yaml
+        - sed -i "s/CI_PROJECT_NAME/${CURRENT_PROJECT_NAME}/g" template/service.yaml
+        - sed -i "s/CI_PROJECT_NAME/${CURRENT_PROJECT_NAME}/g" template/deployment.yaml
+        - sed -i "s/0.1.0/\"${VERSION}\"/g" ${CURRENT_PROJECT_NAME}/Chart.yaml
+        - sed -i "s/0.1.0/${VERSION}/g" template/values.yaml
+        - cp template/values.yaml ${CURRENT_PROJECT_NAME}/values.yaml
+        - cp template/service.yaml ${CURRENT_PROJECT_NAME}/templates/service.yaml
+        - cp template/deployment.yaml ${CURRENT_PROJECT_NAME}/templates/deployment.yaml
+        - helm repo add ${CURRENT_PROJECT_NAME}-helmrepo ${HELM_REPOSITORY}
+        - helm lint --debug ${CURRENT_PROJECT_NAME}
+        - helm package --debug ${CURRENT_PROJECT_NAME}
+    artifacts:
+        paths:
+            - "*.tgz"
+        expire_in: 1 day
+
+helm chart push:
+    stage: helm chart push
+    dependencies: [helm chart build]
+    before_script:
+        - echo "CURRENT_PROJECT_NAME':'        ${CURRENT_PROJECT_NAME};"
+        - export VERSION=$(grep 'version =' ./build.gradle | cut -d "'" -f 2 | cut -d "-" -f 1)
+        - echo "VERSION':'                     ${VERSION};"
+        - echo "HELM_REPOSITORY':'             ${HELM_REPOSITORY}."
+    script:
+        - helm nexus-push ${CURRENT_PROJECT_NAME}-helmrepo ${CURRENT_PROJECT_NAME}-${VERSION}.tgz -u ${NEXUS_LOGIN} -p ${NEXUS_PASSWORD}
+
+openshift deploy:
+    stage: openshift deploy
+    dependencies: [helm chart push]
+    before_script:
+        - echo "CURRENT_PROJECT_GROUP':'       ${CURRENT_PROJECT_GROUP};"
+        - echo "HELM_REPOSITORY':'             ${HELM_REPOSITORY};"
+        - echo "CURRENT_PROJECT_NAME':'        ${CURRENT_PROJECT_NAME};"
+        - export VERSION=$(grep 'version =' ./build.gradle | cut -d "'" -f 2 | cut -d "-" -f 1)
+        - echo "VERSION':'                     ${VERSION}."
+    script:
+        - helm repo add ${CURRENT_PROJECT_GROUP}'-'helmrepo ${HELM_REPOSITORY}
+        - helm nexus-push ${CURRENT_PROJECT_GROUP}'-'helmrepo login -u ${NEXUS_LOGIN} -p ${NEXUS_PASSWORD}
+        - helm repo update
+        - helm upgrade --install ${CURRENT_PROJECT_NAME} --namespace team-4 ${CURRENT_PROJECT_GROUP}'-'helmrepo/${CURRENT_PROJECT_NAME} --wait
