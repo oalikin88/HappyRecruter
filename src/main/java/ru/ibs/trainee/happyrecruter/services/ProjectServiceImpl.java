@@ -276,9 +276,9 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndAuthor(String companyNameFilter,
 			String statusProjectFilter, String authorCardFilter) {
-		return showRegistryCards().stream().filter(t -> t.getCompanyName().equals(companyNameFilter))
-				.filter(t -> t.getStatusValue().equals(statusProjectFilter))
-				.filter(t -> t.getFio().contains(authorCardFilter)).collect(Collectors.toList());
+		return showRegistryCards().stream().filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
+				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
+				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase())).collect(Collectors.toList());
 	}
 
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusAndAuthorAndSortByCompanyName(
@@ -375,8 +375,8 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	public List<ProjectDTOView> projectDTOViewFilterByStatusAndAuthor(String statusProjectFilter,
 			String authorCardFilter) {
-		return showRegistryCards().stream().filter(t -> t.getStatusValue().equals(statusProjectFilter))
-				.filter(t -> t.getFio().contains(authorCardFilter)).collect(Collectors.toList());
+		return showRegistryCards().stream().filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
+				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase())).collect(Collectors.toList());
 	}
 
 	public List<ProjectDTOView> projectDTOViewFilterByStatusAndAuthorAndSortByProjectName(String statusProjectFilter,
@@ -457,7 +457,7 @@ public class ProjectServiceImpl implements ProjectService {
 	// Фильтр по автору и сортировка
 
 	public List<ProjectDTOView> projectDTOViewFilterByAuthor(String authorCardFilter) {
-		return showRegistryCards().stream().filter(t -> t.getFio().contains(authorCardFilter))
+		return showRegistryCards().stream().filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 
@@ -520,8 +520,8 @@ public class ProjectServiceImpl implements ProjectService {
 
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthor(String companyNameFilter,
 			String authorCardFilter) {
-		return showRegistryCards().stream().filter(t -> t.getCompanyName().equals(companyNameFilter))
-				.filter(t -> t.getFio().contains(authorCardFilter)).collect(Collectors.toList());
+		return showRegistryCards().stream().filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
+				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase())).collect(Collectors.toList());
 	}
 	
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByProjectName(String companyNameFilter,
@@ -590,8 +590,8 @@ public class ProjectServiceImpl implements ProjectService {
 
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilter(String companyNameFilter,
 			String statusProjectFilter) {
-		return showRegistryCards().stream().filter(t -> t.getCompanyName().equals(companyNameFilter))
-				.filter(t -> t.getStatusValue().equals(statusProjectFilter)).collect(Collectors.toList());
+		return showRegistryCards().stream().filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
+				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase())).collect(Collectors.toList());
 	}
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByProjectName(String companyNameFilter,
 			String statusProjectFilter) {
@@ -656,7 +656,7 @@ public class ProjectServiceImpl implements ProjectService {
 	// Фильтр по заказчику
 
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyName(String companyNameFilter) {
-		return showRegistryCards().stream().filter(t -> t.getCompanyName().contains(companyNameFilter))
+		return showRegistryCards().stream().filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByProjectName(String companyNameFilter) {
@@ -710,7 +710,7 @@ public class ProjectServiceImpl implements ProjectService {
 	// Фильтр по статусу
 
 	public List<ProjectDTOView> projectDTOViewFilterByStatusProject(String statusProjectFilter) {
-		return showRegistryCards().stream().filter(t -> t.getStatusValue().equals(statusProjectFilter))
+		return showRegistryCards().stream().filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 	

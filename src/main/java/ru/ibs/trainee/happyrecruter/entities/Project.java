@@ -66,22 +66,25 @@ public class Project {
     private Methodology idMethodology;
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private User user;
+    private User user1;
+    
+    @Column(name = "administrator_id")
+    private Long administratorId;
     @ManyToOne
     @JoinColumn(name = "subjectArea_id")
     private SubjectArea subjectArea;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private MemberTeam memberTeam1;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private MemberTeam memberTeam2;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private MemberTeam memberTeam3;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private MemberTeam memberTeam4;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private MemberTeam memberTeam5;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private MemberTeam memberTeam6;
-    @OneToOne
+    @ManyToOne
     private ProjectStatus projectStatus;
 }
