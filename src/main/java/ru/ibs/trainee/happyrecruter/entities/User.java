@@ -17,8 +17,6 @@ public class User {
     private String username;
     private String password;
     private String fio;
-    
-    private Long administrator;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "users_roles",

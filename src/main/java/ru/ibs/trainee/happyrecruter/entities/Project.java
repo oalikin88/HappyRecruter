@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -66,10 +67,8 @@ public class Project {
     private Methodology idMethodology;
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private User user1;
-    
-    @Column(name = "administrator_id")
-    private Long administratorId;
+    private User user;
+ 
     @ManyToOne
     @JoinColumn(name = "subjectArea_id")
     private SubjectArea subjectArea;
