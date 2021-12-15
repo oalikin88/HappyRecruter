@@ -11,7 +11,7 @@ ARG APP_PATH=/opt/app/
 
 ENV JAVA_PARAM=$JAVA_PARAM
 WORKDIR /opt/app
-COPY --from=builder /usr/myapp/build/libs/*.jar /opt/app/
+COPY --from=builder /usr/myapp/build/libs/*.jar /opt/app/app.jar
 
 RUN chmod 777 /opt/app/*.jar
 RUN chown nobody -R /opt/app
