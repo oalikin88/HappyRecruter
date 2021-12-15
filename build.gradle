@@ -5,6 +5,10 @@ plugins {
     
 }
 
+jar {
+ enabled = false
+}
+
 group = 'ru.ibs'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
