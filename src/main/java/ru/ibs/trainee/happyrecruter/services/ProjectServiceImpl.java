@@ -254,17 +254,29 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<ProjectDTOView> showRegistryCards() {
 		List<ProjectDTOView> listDTO = new ArrayList<>();
-
+		
 		List<Project> list = projectRepository.findAll();
 		for (Project pr : list) {
 			projectDTOView = dtoViewMapper.projectToProjectDTOView(pr);
 			List<LocalDate> listDate = new ArrayList<>();
-			listDate.add(pr.getMemberTeam1().getDateStartProject());
-			listDate.add(pr.getMemberTeam2().getDateStartProject());
-			listDate.add(pr.getMemberTeam3().getDateStartProject());
-			listDate.add(pr.getMemberTeam4().getDateStartProject());
-			listDate.add(pr.getMemberTeam5().getDateStartProject());
-			listDate.add(pr.getMemberTeam6().getDateStartProject());
+			if (!pr.getMemberTeam1().getDateStartProject().equals(null)) {
+				listDate.add(pr.getMemberTeam1().getDateStartProject());
+			}
+			if (!pr.getMemberTeam2().getDateStartProject().equals(null)) {
+				listDate.add(pr.getMemberTeam2().getDateStartProject());
+			}
+			if (!pr.getMemberTeam3().getDateStartProject().equals(null)) {
+				listDate.add(pr.getMemberTeam3().getDateStartProject());
+			}
+			if (!pr.getMemberTeam4().getDateStartProject().equals(null)) {
+				listDate.add(pr.getMemberTeam4().getDateStartProject());
+			}
+			if (!pr.getMemberTeam5().getDateStartProject().equals(null)) {
+				listDate.add(pr.getMemberTeam5().getDateStartProject());
+			}
+			if (!pr.getMemberTeam6().getDateStartProject().equals(null)) {
+				listDate.add(pr.getMemberTeam6().getDateStartProject());
+			}
 			Collections.sort(listDate);
 			projectDTOView.setDateStartProject(listDate.get(0));
 			listDTO.add(projectDTOView);
@@ -273,12 +285,14 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	// Фильтр по заказчику, статусу и автору карточки
-	
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndAuthor(String companyNameFilter,
 			String statusProjectFilter, String authorCardFilter) {
-		return showRegistryCards().stream().filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
+		return showRegistryCards().stream()
+				.filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
 				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase())).collect(Collectors.toList());
+				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.collect(Collectors.toList());
 	}
 
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusAndAuthorAndSortByCompanyName(
@@ -372,11 +386,13 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	// Фильтр по статусу и автору карточки
-	
+
 	public List<ProjectDTOView> projectDTOViewFilterByStatusAndAuthor(String statusProjectFilter,
 			String authorCardFilter) {
-		return showRegistryCards().stream().filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase())).collect(Collectors.toList());
+		return showRegistryCards().stream()
+				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
+				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.collect(Collectors.toList());
 	}
 
 	public List<ProjectDTOView> projectDTOViewFilterByStatusAndAuthorAndSortByProjectName(String statusProjectFilter,
@@ -452,12 +468,12 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDTOViewFilterByStatusAndAuthor(statusProjectFilter, authorCardFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed()).collect(Collectors.toList());
 	}
-	
-	
+
 	// Фильтр по автору и сортировка
 
 	public List<ProjectDTOView> projectDTOViewFilterByAuthor(String authorCardFilter) {
-		return showRegistryCards().stream().filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+		return showRegistryCards().stream()
+				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 
@@ -476,7 +492,8 @@ public class ProjectServiceImpl implements ProjectService {
 				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject)).collect(Collectors.toList());
 	}
 
-	public List<ProjectDTOView> projectDTOViewFilterByAuthorAndSortByDatePeopleStartWorkReversed(String authorCardFilter) {
+	public List<ProjectDTOView> projectDTOViewFilterByAuthorAndSortByDatePeopleStartWorkReversed(
+			String authorCardFilter) {
 		return projectDTOViewFilterByAuthor(authorCardFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
 				.collect(Collectors.toList());
@@ -486,274 +503,348 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDTOViewFilterByAuthor(authorCardFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue)).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByAuthorAndSortByStatusReversed(String authorCardFilter) {
 		return projectDTOViewFilterByAuthor(authorCardFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue)).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByAuthorAndSortByDateCreate(String authorCardFilter) {
 		return projectDTOViewFilterByAuthor(authorCardFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate)).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByAuthorAndSortByDateCreateReversed(String authorCardFilter) {
 		return projectDTOViewFilterByAuthor(authorCardFilter).stream()
-				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed()).collect(Collectors.toList());
+				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
+				.collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByAuthorAndSortByDelegate(String authorCardFilter) {
 		return projectDTOViewFilterByAuthor(authorCardFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::isDelegated)).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByAuthorAndSortByDelegateReversed(String authorCardFilter) {
 		return projectDTOViewFilterByAuthor(authorCardFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed()).collect(Collectors.toList());
 	}
-	
+
 	public List<ProjectDTOView> projectDTOViewFilterByAuthorAndSortByCompanyName(String authorCardFilter) {
 		return projectDTOViewFilterByAuthor(authorCardFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName)).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByAuthorAndSortByCompanyNameReversed(String authorCardFilter) {
 		return projectDTOViewFilterByAuthor(authorCardFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed()).collect(Collectors.toList());
 	}
-	
+
 	// Фильтр по заказчику и автору карточки
 
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthor(String companyNameFilter,
 			String authorCardFilter) {
-		return showRegistryCards().stream().filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase())).collect(Collectors.toList());
+		return showRegistryCards().stream()
+				.filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
+				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.collect(Collectors.toList());
 	}
-	
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByProjectName(String companyNameFilter,
 			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName)).collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getProjectName)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByProjectNameReversed(String companyNameFilter,
-			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName).reversed()).collect(Collectors.toList());
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByProjectNameReversed(
+			String companyNameFilter, String authorCardFilter) {
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getProjectName).reversed()).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDatePeopleStartWork(String companyNameFilter,
-			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject)).collect(Collectors.toList());
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDatePeopleStartWork(
+			String companyNameFilter, String authorCardFilter) {
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDatePeopleStartWorkReversed(String companyNameFilter,
-			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed()).collect(Collectors.toList());
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDatePeopleStartWorkReversed(
+			String companyNameFilter, String authorCardFilter) {
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
+				.collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByStatus(String companyNameFilter,
 			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getStatusValue)).collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByStatusReversed(String companyNameFilter,
-			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getStatusValue).reversed()).collect(Collectors.toList());
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByStatusReversed(
+			String companyNameFilter, String authorCardFilter) {
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue).reversed()).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDateCreate(String companyNameFilter,
 			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate)).collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDateCreateReversed(String companyNameFilter,
-			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed()).collect(Collectors.toList());
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDateCreateReversed(
+			String companyNameFilter, String authorCardFilter) {
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
+				.collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDelegate(String companyNameFilter,
 			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated)).collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::isDelegated)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDelegateReversed(String companyNameFilter,
-			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed()).collect(Collectors.toList());
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByDelegateReversed(
+			String companyNameFilter, String authorCardFilter) {
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed()).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByCompanyName(String companyNameFilter,
 			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName)).collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByCompanyNameReversed(String companyNameFilter,
-			String authorCardFilter) {
-		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter,
-				authorCardFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed()).collect(Collectors.toList());
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndAuthorAndSortByCompanyNameReversed(
+			String companyNameFilter, String authorCardFilter) {
+		return projectDTOViewFilterByCompanyNameAndAuthor(companyNameFilter, authorCardFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed()).collect(Collectors.toList());
 	}
-	
-	
+
 	// Фильтр по заказчику и статусу
 
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilter(String companyNameFilter,
 			String statusProjectFilter) {
-		return showRegistryCards().stream().filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
-				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase())).collect(Collectors.toList());
+		return showRegistryCards().stream()
+				.filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
+				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
+				.collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByProjectName(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByProjectName(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getProjectName)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByProjectNameReversed(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByProjectNameReversed(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getProjectName).reversed()).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDatePeopleStartWork(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDatePeopleStartWork(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDatePeopleStartWorkReversed(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDatePeopleStartWorkReversed(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
-				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed()).collect(Collectors.toList());
+				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
+				.collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByStatus(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByStatus(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByStatusReversed(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByStatusReversed(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue).reversed()).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDateCreate(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDateCreate(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDateCreateReversed(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDateCreateReversed(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
-				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed()).collect(Collectors.toList());
+				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
+				.collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDelegate(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDelegate(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::isDelegated)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDelegateReversed(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByDelegateReversed(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed()).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByCompanyName(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByCompanyName(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByCompanyNameReversed(String companyNameFilter,
-			String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndStatusFilterAndSortByCompanyNameReversed(
+			String companyNameFilter, String statusProjectFilter) {
 		return projectDTOViewFilterByCompanyNameAndStatusFilter(companyNameFilter, statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed()).collect(Collectors.toList());
 	}
 	// Фильтр по заказчику
 
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyName(String companyNameFilter) {
-		return showRegistryCards().stream().filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
+		return showRegistryCards().stream()
+				.filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByProjectName(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName))
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getProjectName)).collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByProjectNameReversed(
+			String companyNameFilter) {
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getProjectName).reversed()).collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByDatePeopleStartWork(
+			String companyNameFilter) {
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject)).collect(Collectors.toList());
+	}
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByDatePeopleStartWorkReversed(
+			String companyNameFilter) {
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
 				.collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByProjectNameReversed(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName).reversed())
-				.collect(Collectors.toList());
-	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByDatePeopleStartWork(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject))
-				.collect(Collectors.toList());
-	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByDatePeopleStartWorkReversed(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
-				.collect(Collectors.toList());
-	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByStatus(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getStatusValue))
-				.collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue)).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByStatusReversed(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getStatusValue).reversed())
-				.collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue).reversed()).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByDateCreate(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate))
-				.collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate)).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByDateCreateReversed(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
 				.collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByDelegate(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated))
-				.collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::isDelegated)).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByDelegateReversed(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed())
-				.collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed()).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByCompanyName(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName))
-				.collect(Collectors.toList());
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByCompanyNameReversed(String companyNameFilter) {
-		return projectDTOViewFilterByCompanyName(companyNameFilter).stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed())
-				.collect(Collectors.toList());
+
+	public List<ProjectDTOView> projectDTOViewFilterByCompanyNameAndSortByCompanyNameReversed(
+			String companyNameFilter) {
+		return projectDTOViewFilterByCompanyName(companyNameFilter).stream()
+				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed()).collect(Collectors.toList());
 	}
 	// Фильтр по статусу
 
 	public List<ProjectDTOView> projectDTOViewFilterByStatusProject(String statusProjectFilter) {
-		return showRegistryCards().stream().filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
+		return showRegistryCards().stream()
+				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
-	
+
 	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByProjectName(String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getProjectName)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByProjectNameReversed(String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByProjectNameReversed(
+			String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getProjectName).reversed()).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDatePeopleStartWork(String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDatePeopleStartWork(
+			String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDatePeopleStartWorkReversed(String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDatePeopleStartWorkReversed(
+			String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
-				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed()).collect(Collectors.toList());
+				.sorted(Comparator.comparing(ProjectDTOView::getDateStartProject).reversed())
+				.collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByStatus(String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue)).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByStatusReversed(String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getStatusValue).reversed()).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDateCreate(String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDateCreateReversed(String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDateCreateReversed(
+			String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
-				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed()).collect(Collectors.toList());
+				.sorted(Comparator.comparing(ProjectDTOView::getDateTimeCreate).reversed())
+				.collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDelegate(String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::isDelegated)).collect(Collectors.toList());
 	}
-	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDelegateReversed(String statusProjectFilter) {
+
+	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByDelegateReversed(
+			String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::isDelegated).reversed()).collect(Collectors.toList());
 	}
+
 	public List<ProjectDTOView> projectDTOViewFilterByStatusProjectAndSortByCompanyName(String statusProjectFilter) {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName)).collect(Collectors.toList());
@@ -764,7 +855,6 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDTOViewFilterByStatusProject(statusProjectFilter).stream()
 				.sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed()).collect(Collectors.toList());
 	}
-	
 
 	public List<ProjectDTOView> projectDTOViewSortByProjectName() {
 		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getProjectName))
@@ -825,7 +915,5 @@ public class ProjectServiceImpl implements ProjectService {
 		return showRegistryCards().stream().sorted(Comparator.comparing(ProjectDTOView::getCompanyName).reversed())
 				.collect(Collectors.toList());
 	}
-
-
 
 }
