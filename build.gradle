@@ -1,7 +1,12 @@
 plugins {
     id 'org.springframework.boot' version '2.6.0'
+<<<<<<< HEAD
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'    
     id 'war'
+=======
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    
+>>>>>>> refs/remotes/origin/develop
 }
 
 group = 'ru.ibs'
