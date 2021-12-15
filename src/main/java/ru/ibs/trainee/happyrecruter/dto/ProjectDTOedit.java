@@ -18,6 +18,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Component
 public class ProjectDTOedit {
+	@JsonDeserialize
+	private LocalDateTime dateTimeCreate;
     private String projectStatus;
     private String companyName;
     private String projectName;
@@ -46,27 +48,21 @@ public class ProjectDTOedit {
     private String type4;
     private float countNeeds1;
     private float countHired1;
-    @JsonDeserialize 
     private LocalDate dateStartProject1;
     private float countNeeds2;
     private float countHired2;
-    @JsonDeserialize 
     private LocalDate dateStartProject2;
     private float countNeeds3;
     private float countHired3;
-    @JsonDeserialize 
     private LocalDate dateStartProject3;
     private float countNeeds4;
     private float countHired4;
-    @JsonDeserialize 
     private LocalDate dateStartProject4;
     private float countNeeds5;
-    private float countHired5;
-    @JsonDeserialize 
+    private float countHired5; 
     private LocalDate dateStartProject5;
     private float countNeeds6;
     private float countHired6;
-    @JsonDeserialize 
     private LocalDate dateStartProject6;
 	
 }

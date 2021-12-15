@@ -5,7 +5,15 @@ import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
 import ru.ibs.trainee.happyrecruter.entities.Project;
 
 public interface ProjectService {
-	
+	List<String> showOvertimes();
+	List<String> showStatus();
+	List<String> showStage();
+	List<String> showMethodologies();
+	List<String> showType1();
+	List<String> showType2();
+	List<String> showType3();
+	List<String> showType4();
+	List<String> showSubjects();
 	Project getProject(Long id);
 	Project openProjects(Long id);
 	Project createProject(Project Project);

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @Component
 public class ProjectDTO {
 	private Long id;
+	@JsonDeserialize 
 	private LocalDateTime DateTimeCreate;
 	private Long idProjectStatus;
     private String projectStatus;

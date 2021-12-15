@@ -42,9 +42,10 @@ public class ProjectServiceImpl implements ProjectService {
 	ProjectStatusRepository projectStatusRepository;
 	@Autowired
 	MemberTeamRepository memberTeamRepository;
-
 	@Autowired
 	EntityManagerFactory emf;
+
+	// Создание карточки
 
 	@Override
 	public Project createProject(Project project) {
@@ -87,20 +88,69 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectRepository.save(project);
 	}
 
+	// Просмотр карточки
+
 	@Override
 	public Project openProjects(Long id) {
-
 		return projectRepository.findById(id).get();
-
-		// List<Project> list = new ArrayList<>();
-		// if (id != null) {
-		// list.add(projectRepository.findById(id).get());
-		// list;
-		// } else {
-		// projectRepository.findAll().forEach(e -> list.add(e));
-		// return list;
-		// }
 	}
+
+	// Словарь предметной области
+
+	public List<String> showSubjects() {
+		List<String> list = new ArrayList<>();
+		subjectAreaRepository.findAll().stream().sorted(Comparator.comparing(SubjectArea::getName))
+				.forEach(o -> list.add(o.getName()));
+		return list;
+	}
+	
+	// Словари типов проекта
+	
+	public List<String> showType1() {
+		List<String> list = new ArrayList<>();
+		type1Repository.findAll().stream().sorted(Comparator.comparing(Type1::getType)).forEach(o -> list.add(o.getType()));
+		return list;
+	}
+
+	public List<String> showType2() {
+		List<String> list = new ArrayList<>();
+		type2Repository.findAll().stream().sorted(Comparator.comparing(Type2::getType)).forEach(o -> list.add(o.getType()));
+		return list;
+	}
+	public List<String> showType3() {
+		List<String> list = new ArrayList<>();
+		type3Repository.findAll().stream().sorted(Comparator.comparing(Type3::getType)).forEach(o -> list.add(o.getType()));
+		return list;
+	}
+	public List<String> showType4() {
+		List<String> list = new ArrayList<>();
+		type4Repository.findAll().stream().sorted(Comparator.comparing(Type4::getType)).forEach(o -> list.add(o.getType()));
+		return list;
+	}
+	
+	public List<String> showMethodologies() {
+		List<String> list = new ArrayList<>();
+		methodologyRepository.findAll().stream().sorted(Comparator.comparing(Methodology::getMethodologyName)).forEach(o -> list.add(o.getMethodologyName()));
+		return list;
+	}
+	
+	public List<String> showStage() {
+		List<String> list = new ArrayList<>();
+		stageRepository.findAll().stream().forEach(o -> list.add(o.getStageName()));
+		return list;
+	}
+	public List<String> showStatus() {
+		List<String> list = new ArrayList<>();
+		projectStatusRepository.findAll().forEach(o -> list.add(o.getStatusValue()));
+		return list;
+	}
+	public List<String> showOvertimes() {
+		List<String> list = new ArrayList<>();
+		overtimeRepository.findAll().stream().sorted(Comparator.comparing(Overtime::getOvertimeName)).forEach(o -> list.add(o.getOvertimeName()));
+		return list;
+	}
+	
+	// Проверка есть ли карточка в БД
 
 	public Project getProject(Long id) {
 		Project project = null;
@@ -116,6 +166,8 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		return project;
 	}
+
+	// Редактирование карточки
 
 	@Override
 	public Project editProject(Project project, Long id) {
@@ -240,6 +292,8 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectRepository.save(editProject);
 	}
 
+	// Удаление карточки
+
 	@Override
 	public void deleteProject(Long id) {
 
@@ -251,35 +305,41 @@ public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	ProjectDTOViewMapper dtoViewMapper;
 
+	// Реестр карточек
+
 	@Override
 	public List<ProjectDTOView> showRegistryCards() {
 		List<ProjectDTOView> listDTO = new ArrayList<>();
-		
+
 		List<Project> list = projectRepository.findAll();
 		for (Project pr : list) {
 			projectDTOView = dtoViewMapper.projectToProjectDTOView(pr);
 			List<LocalDate> listDate = new ArrayList<>();
-			if (!pr.getMemberTeam1().getDateStartProject().equals(null)) {
+			if (pr.getMemberTeam1().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam1().getDateStartProject());
 			}
-			if (!pr.getMemberTeam2().getDateStartProject().equals(null)) {
+			if (pr.getMemberTeam2().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam2().getDateStartProject());
 			}
-			if (!pr.getMemberTeam3().getDateStartProject().equals(null)) {
+			if (pr.getMemberTeam3().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam3().getDateStartProject());
 			}
-			if (!pr.getMemberTeam4().getDateStartProject().equals(null)) {
+			if (pr.getMemberTeam4().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam4().getDateStartProject());
 			}
-			if (!pr.getMemberTeam5().getDateStartProject().equals(null)) {
+			if (pr.getMemberTeam5().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam5().getDateStartProject());
 			}
-			if (!pr.getMemberTeam6().getDateStartProject().equals(null)) {
+			if (pr.getMemberTeam6().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam6().getDateStartProject());
 			}
-			Collections.sort(listDate);
-			projectDTOView.setDateStartProject(listDate.get(0));
+			if (!listDate.isEmpty()) {
+				Collections.sort(listDate);
+				projectDTOView.setDateStartProject(listDate.get(0));
+
+			}
 			listDTO.add(projectDTOView);
+
 		}
 		return listDTO;
 	}

@@ -1,7 +1,12 @@
 package ru.ibs.trainee.happyrecruter.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,11 +17,12 @@ import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOedit;
 import ru.ibs.trainee.happyrecruter.entities.*;
 import ru.ibs.trainee.happyrecruter.mapper.ProjectMapperTest;
+import ru.ibs.trainee.happyrecruter.repositories.SubjectAreaRepository;
 import ru.ibs.trainee.happyrecruter.services.ProjectService;
 
 @RestController
-@CrossOrigin(origins = "*",
-methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+		RequestMethod.DELETE })
 @RequestMapping("project/")
 public class ProjectController {
 
@@ -28,7 +34,7 @@ public class ProjectController {
 	Project project;
 	@Autowired
 	ProjectDTO dto;
-
+	SubjectAreaRepository subjectAreaRepository;
 
 	@Tag(name = "Создание проекта", description = "Детальное описание будет позже")
 	@PostMapping("create")
@@ -39,6 +45,50 @@ public class ProjectController {
 
 	}
 
+	@GetMapping("subjects")
+	public List<String> showSubject() {
+		return projectService.showSubjects();
+	}
+
+	@GetMapping("type1")
+	public List<String> showType1() {
+		return projectService.showType1();
+	}
+
+	@GetMapping("type2")
+	public List<String> showType2() {
+		return projectService.showType2();
+	}
+
+	@GetMapping("type3")
+	public List<String> showType3() {
+		return projectService.showType3();
+	}
+
+	@GetMapping("type4")
+	public List<String> showType4() {
+		return projectService.showType4();
+	}
+
+	@GetMapping("methodologies")
+	public List<String> showMethodology() {
+		return projectService.showMethodologies();
+	}
+
+	@GetMapping("stage")
+	public List<String> showStage() {
+		return projectService.showStage();
+	}
+
+	@GetMapping("pojectStatus")
+	public List<String> showStatus() {
+		return projectService.showStatus();
+	}
+
+	@GetMapping("overtime")
+	public List<String> showOvertime() {
+		return projectService.showOvertimes();
+	}
 
 	@Tag(name = "Просмотр карточки", description = "Детальное описание будет позже")
 	@GetMapping(value = "view/{id}")
