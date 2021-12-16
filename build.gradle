@@ -1,12 +1,13 @@
 plugins {
     id 'org.springframework.boot' version '2.6.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'   
-    id 'war'
+    
 }
 
 group = 'ru.ibs'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+
+apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 configurations {
@@ -15,9 +16,7 @@ configurations {
     }
 }
 
-jar {
- enabled = false
-}
+
 
 
 repositories {

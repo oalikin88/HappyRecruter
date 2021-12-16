@@ -42,8 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
 	ProjectStatusRepository projectStatusRepository;
 	@Autowired
 	MemberTeamRepository memberTeamRepository;
-	@Autowired
-	EntityManagerFactory emf;
+
 
 	// Создание карточки
 

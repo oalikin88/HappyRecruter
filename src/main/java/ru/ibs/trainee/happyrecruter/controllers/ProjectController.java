@@ -1,12 +1,7 @@
 package ru.ibs.trainee.happyrecruter.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
