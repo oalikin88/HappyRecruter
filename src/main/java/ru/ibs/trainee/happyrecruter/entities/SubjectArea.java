@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @AllArgsConstructor
@@ -23,5 +24,22 @@ public class SubjectArea {
     @GeneratedValue
     private Long id;
     private String name;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SubjectArea other = (SubjectArea) obj;
+		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name);
+	}
+    
+    
 
 }

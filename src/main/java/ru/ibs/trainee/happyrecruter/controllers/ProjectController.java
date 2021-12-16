@@ -93,10 +93,10 @@ public class ProjectController {
 		return dto;
 	}
 
-	@CrossOrigin(origins = "*", methods = RequestMethod.PUT)
-	@Transactional
+
+
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
-	@PutMapping(value = "view/edit/")
+	@PostMapping(value = "view/edit/")
 	public ResponseEntity<String> edit(@RequestParam(required = true) Long id, @RequestBody ProjectDTOedit dto) {
 		projectService.getProject(id);
 		project = mapper.fromProjectDTOeditToProject(dto);

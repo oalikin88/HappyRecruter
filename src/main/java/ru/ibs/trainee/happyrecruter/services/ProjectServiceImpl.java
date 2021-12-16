@@ -251,40 +251,39 @@ public class ProjectServiceImpl implements ProjectService {
 			editProject.getMemberTeam6().setCountNeeds(project.getMemberTeam6().getCountNeeds());
 			editProject.getMemberTeam6().setDateStartProject(project.getMemberTeam6().getDateStartProject());
 		}
-		if (!project.getProjectStatus().getStatusValue().equals(editProject.getProjectStatus().getStatusValue())) {
+		if (!project.getProjectStatus().equals(editProject.getProjectStatus())) {
 			editProject.setProjectStatus(projectStatusRepository
 					.findProjectStatusByStatusValue(project.getProjectStatus().getStatusValue()));
 		}
 
-		if (!project.getSubjectArea().getName().equals(editProject.getSubjectArea().getName())) {
+		if (!project.getSubjectArea().equals(editProject.getSubjectArea())) {
 			editProject.setSubjectArea(subjectAreaRepository.findByNameIs(project.getSubjectArea().getName()));
 		}
 
-		if (!project.getIdOvertime().getOvertimeName().equals(editProject.getIdOvertime().getOvertimeName())) {
+		if (!project.getIdOvertime().equals(editProject.getIdOvertime())) {
 			editProject
 					.setIdOvertime(overtimeRepository.findByOvertimeNameIs(project.getIdOvertime().getOvertimeName()));
 		}
 
-		if (!project.getIdStage().getStageName().equals(editProject.getIdStage().getStageName())) {
+		if (!project.getIdStage().equals(editProject.getIdStage())) {
 			editProject.setIdStage(stageRepository.findByStageNameIs(project.getIdStage().getStageName()));
 		}
 
-		if (!project.getIdMethodology().getMethodologyName()
-				.equals(editProject.getIdMethodology().getMethodologyName())) {
+		if (!project.getIdMethodology().equals(editProject.getIdMethodology())) {
 			editProject.setIdMethodology(
 					methodologyRepository.findByMethodologyNameIs(project.getIdMethodology().getMethodologyName()));
 		}
 
-		if (!project.getIdType1().getType().equals(editProject.getIdType1().getType())) {
+		if (!project.getIdType1().equals(editProject.getIdType1())) {
 			editProject.setIdType1(type1Repository.findByTypeIs(project.getIdType1().getType()));
 		}
-		if (!project.getIdType2().getType().equals(editProject.getIdType2().getType())) {
+		if (!project.getIdType2().equals(editProject.getIdType2())) {
 			editProject.setIdType2(type2Repository.findByTypeIs(project.getIdType2().getType()));
 		}
-		if (!project.getIdType3().getType().equals(editProject.getIdType3().getType())) {
+		if (!project.getIdType3().equals(editProject.getIdType3())) {
 			editProject.setIdType3(type3Repository.findByTypeIs(project.getIdType3().getType()));
 		}
-		if (!project.getIdType4().getType().equals(editProject.getIdType4().getType())) {
+		if (!project.getIdType4().equals(editProject.getIdType4())) {
 			editProject.setIdType4(type4Repository.findByTypeIs(project.getIdType4().getType()));
 		}
 
