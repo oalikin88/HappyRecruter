@@ -93,6 +93,7 @@ public class ProjectController {
 		return dto;
 	}
 
+	@CrossOrigin(origins = "*", methods = RequestMethod.PUT)
 	@Transactional
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
 	@PutMapping(value = "view/edit/")
