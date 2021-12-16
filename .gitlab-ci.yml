@@ -94,4 +94,5 @@ openshift deploy:
         - helm repo add ${CURRENT_PROJECT_GROUP}'-'helmrepo ${HELM_REPOSITORY}
         - helm nexus-push ${CURRENT_PROJECT_GROUP}'-'helmrepo login -u ${NEXUS_LOGIN} -p ${NEXUS_PASSWORD}
         - helm repo update
+        - helm uninstall team-4-back --namespace team-4
         - helm upgrade --install ${CURRENT_PROJECT_NAME} --namespace team-4 ${CURRENT_PROJECT_GROUP}'-'helmrepo/${CURRENT_PROJECT_NAME} --wait
