@@ -4,6 +4,7 @@ WORKDIR /usr/myapp
 COPY . .
 
 RUN gradle clean build --no-daemon -P docker -DskipTests
+RUN ls -la /usr/myapp/build/libs/
 
 FROM gradle:jdk17 as server
 ARG JAVA_PARAM="-Xms256M -Xmx1024M -XX:+UseG1GC"
