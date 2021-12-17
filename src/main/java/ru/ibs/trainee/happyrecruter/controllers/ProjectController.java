@@ -2,7 +2,6 @@ package ru.ibs.trainee.happyrecruter.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,10 +95,10 @@ public class ProjectController {
 
 
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
-	@PostMapping(value = "view/edit/")
-	public ResponseEntity<String> edit(@RequestParam(required = true) Long id, @RequestBody ProjectDTOedit dto) {
-		projectService.getProject(id);
+	@RequestMapping(value = "view/edit", method = RequestMethod.PUT, headers = "Accept=*/*")
+	public ResponseEntity<String> edit(@RequestParam(required = false) Long id, @RequestBody ProjectDTOedit dto) {
 		project = mapper.fromProjectDTOeditToProject(dto);
+		projectService.getProject(id);
 		projectService.editProject(project, id);
 		return new ResponseEntity<String>("Карточка отредактирована ", HttpStatus.OK);
 	}
@@ -120,7 +119,8 @@ public class ProjectController {
 			+ " 'companyName' - сортировка по заказчику; 'companyNameReversed' - сортировка в обратном порядке;"
 			+ " Фильтр по автору пока не работает;")
 
-	@GetMapping(value = "view/registry/")
+	@ResponseBody
+	@RequestMapping("view/registry")
 	public List<ProjectDTOView> viewRegistryCards(@RequestParam(value = "sort", required = false) String sort,
 			@RequestParam(required = false) String companyNameFilter,
 			@RequestParam(required = false) String statusProjectFilter,

@@ -3,7 +3,6 @@ package ru.ibs.trainee.happyrecruter.mapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
-
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTO;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOedit;
 import ru.ibs.trainee.happyrecruter.entities.Project;

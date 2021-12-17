@@ -3,14 +3,11 @@ package ru.ibs.trainee.happyrecruter.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
 import org.springframework.stereotype.Component;
 
 @Entity
