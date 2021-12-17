@@ -76,6 +76,8 @@ public class ProjectServiceImpl implements ProjectService {
 		project.setIdType2(type2);
 		project.setIdType3(type3);
 		project.setIdType4(type4);
+		
+		project.setUser(projectRepository.findAll().stream().map(e -> e.getUser()).findFirst().get());
 
 		project.getMemberTeam1().setStaffList(staffListRepository.findStaffListByStaffNameIs("Аналитики"));
 		project.getMemberTeam2().setStaffList(staffListRepository.findStaffListByStaffNameIs("Front"));
