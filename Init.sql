@@ -168,6 +168,7 @@ ALTER TABLE public.users_roles ADD FOREIGN KEY
 ALTER TABLE public.users_roles ADD FOREIGN KEY
 (role_id) REFERENCES public.roles;
 
+
 ALTER TABLE public.memberteam ADD FOREIGN KEY
 (id_staff) REFERENCES public.stafflist;
 

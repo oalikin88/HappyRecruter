@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTO;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
@@ -17,7 +18,7 @@ import ru.ibs.trainee.happyrecruter.services.ProjectService;
 
 @RestController
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
-		RequestMethod.DELETE })
+		RequestMethod.DELETE }, maxAge = 3600)
 @RequestMapping("project/")
 public class ProjectController {
 
@@ -33,6 +34,7 @@ public class ProjectController {
 
 	@Tag(name = "Создание проекта", description = "Детальное описание будет позже")
 	@PostMapping("create")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ProjectDTOedit> create(@RequestBody ProjectDTOedit dto) {
 		project = mapper.fromProjectDTOeditToProject(dto);
 		projectService.createProject(project);
@@ -85,8 +87,10 @@ public class ProjectController {
 		return projectService.showOvertimes();
 	}
 
+	
 	@Tag(name = "Просмотр карточки", description = "Детальное описание будет позже")
 	@GetMapping(value = "view/{id}")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ProjectDTO show(@PathVariable(name = "id") Long id) {
 		project = projectService.openProjects(id);
 		dto = mapper.toProjectDTO(project);
@@ -97,6 +101,7 @@ public class ProjectController {
 
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
 	@PostMapping(value = "view/edit/")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> edit(@RequestParam(required = true) Long id, @RequestBody ProjectDTOedit dto) {
 		projectService.getProject(id);
 		project = mapper.fromProjectDTOeditToProject(dto);
@@ -106,6 +111,7 @@ public class ProjectController {
 
 	@Tag(name = "Удаление карточки", description = "Детальное описание будет позже")
 	@PostMapping(value = "view/delete")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> delete(@RequestParam(required = true) Long id) {
 		project = projectService.getProject(id);
 		projectService.deleteProject(project.getId());
@@ -121,6 +127,7 @@ public class ProjectController {
 			+ " Фильтр по автору пока не работает;")
 
 	@GetMapping(value = "view/registry/")
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<ProjectDTOView> viewRegistryCards(@RequestParam(value = "sort", required = false) String sort,
 			@RequestParam(required = false) String companyNameFilter,
 			@RequestParam(required = false) String statusProjectFilter,
