@@ -1,11 +1,15 @@
 package ru.ibs.trainee.happyrecruter.entities;
 
 import javax.persistence.*;
+
+import lombok.NoArgsConstructor;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -21,8 +25,17 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+    
 
-    public void addRole(Role role) {
+
+	public User(String username, String password, String fio, Set<Role> roles) {
+		this.username = username;
+		this.password = password;
+		this.fio = fio;
+		this.roles = roles;
+	}
+
+	public void addRole(Role role) {
         roles.add(role);
         role.getUsers().add(this);
     }

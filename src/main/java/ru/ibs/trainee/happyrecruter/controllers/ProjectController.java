@@ -91,6 +91,12 @@ public class ProjectController {
 		dto = mapper.toProjectDTO(project);
 		return dto;
 	}
+	
+	@Tag(name = "Добавление команд", description = "Детальное описание будет позже")
+	@GetMapping(value = "view/memberTeam")
+	public List<MemberTeam> addMemberTeam() {
+		return null;
+	}
 
 
 
@@ -98,7 +104,7 @@ public class ProjectController {
 	@RequestMapping(value = "view/edit", method = RequestMethod.PUT, headers = "Accept=*/*")
 	public ResponseEntity<String> edit(@RequestParam(required = false) Long id, @RequestBody ProjectDTOedit dto) {
 		project = mapper.fromProjectDTOeditToProject(dto);
-		projectService.getProject(id);
+	//	projectService.getProject(id);
 		projectService.editProject(project, id);
 		return new ResponseEntity<String>("Карточка отредактирована ", HttpStatus.OK);
 	}
@@ -106,7 +112,7 @@ public class ProjectController {
 	@Tag(name = "Удаление карточки", description = "Детальное описание будет позже")
 	@PostMapping(value = "view/delete")
 	public ResponseEntity<String> delete(@RequestParam(required = true) Long id) {
-		project = projectService.getProject(id);
+	//	project = projectService.getProject(id);
 		projectService.deleteProject(project.getId());
 		return new ResponseEntity<String>("Карточка удалена", HttpStatus.OK);
 	}

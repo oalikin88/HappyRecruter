@@ -1,6 +1,5 @@
 package ru.ibs.trainee.happyrecruter.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Objects;
@@ -9,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Overtime {
@@ -18,6 +16,11 @@ public class Overtime {
     @GeneratedValue
     private Long id;
     private String overtimeName;
+    
+	public Overtime(String overtimeName) {
+		this.overtimeName = overtimeName;
+	}
+    
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -33,6 +36,7 @@ public class Overtime {
 	public int hashCode() {
 		return Objects.hash(id, overtimeName);
 	}
+
     
     
 }

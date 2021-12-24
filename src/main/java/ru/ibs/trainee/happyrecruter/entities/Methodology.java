@@ -1,6 +1,5 @@
 package ru.ibs.trainee.happyrecruter.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Objects;
@@ -10,7 +9,6 @@ import javax.persistence.Id;
 import org.springframework.stereotype.Component;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Component
@@ -20,6 +18,11 @@ public class Methodology {
     @GeneratedValue
     private Long id;
     private String methodologyName;
+    
+	public Methodology(String methodologyName) {
+		this.methodologyName = methodologyName;
+	}
+    
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -35,6 +38,7 @@ public class Methodology {
 	public int hashCode() {
 		return Objects.hash(id, methodologyName);
 	}
+
     
     
 }

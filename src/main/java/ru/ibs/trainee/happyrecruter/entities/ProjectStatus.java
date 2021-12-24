@@ -1,6 +1,5 @@
 package ru.ibs.trainee.happyrecruter.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +12,6 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class ProjectStatus {
 
@@ -21,6 +19,13 @@ public class ProjectStatus {
     @GeneratedValue
     private Long id;
     private String statusValue;
+    
+    
+	public ProjectStatus(String statusValue) {
+		this.statusValue = statusValue;
+	}
+    
+    
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -42,6 +47,7 @@ public class ProjectStatus {
 				+ getId() + ", getStatusValue()=" + getStatusValue() + ", getClass()=" + getClass() + ", toString()="
 				+ super.toString() + "]";
 	}
+
 
 
 

@@ -14,7 +14,6 @@ public interface ProjectService {
 	List<String> showType3();
 	List<String> showType4();
 	List<String> showSubjects();
-	Project getProject(Long id);
 	Project openProjects(Long id);
 	Project createProject(Project Project);
 	Project editProject(Project project, Long id);	

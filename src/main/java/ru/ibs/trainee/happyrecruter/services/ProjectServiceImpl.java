@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -43,48 +43,111 @@ public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	MemberTeamRepository memberTeamRepository;
 
-
 	// Создание карточки
 
 	@Override
-	public Project createProject(Project project) {
+	public Project createProject(Project projectIn) throws NullPointerException {
+		Project project = new Project();
+		project = projectIn;
+
+		Stage stage;
+		ProjectStatus status;
+		SubjectArea subjectArea;
+		Overtime overtime;
+		Methodology methodology;
+		Type1 type1;
+		Type2 type2;
+		Type3 type3;
+		Type4 type4;
 
 		project.setDateTimeCreate(LocalDateTime.now());
 
-		ProjectStatus status = projectStatusRepository.findByStatusValue(project.getProjectStatus().getStatusValue());
-		project.setProjectStatus(status);
+		if (project.getProjectStatus() != null) {
+			status = projectStatusRepository.findByStatusValue(project.getProjectStatus().getStatusValue());
+			project.setProjectStatus(status);
+		} else {
+			if (!project.getProjectName().isEmpty() || !project.getProjectName().isBlank()) {
+				status = projectStatusRepository.findByStatusValue("Черновик");
+				project.setProjectStatus(status);
+			} else {
+				throw new RuntimeException("Не заполнено поле \"Название проекта\"");
+			}
 
-		SubjectArea subjectArea = subjectAreaRepository.findByNameIs(project.getSubjectArea().getName());
-		project.setSubjectArea(subjectArea);
+		}
 
-		Overtime overtime = overtimeRepository.findByOvertimeNameIs(project.getIdOvertime().getOvertimeName());
-		project.setIdOvertime(overtime);
+		if (project.getSubjectArea() != null) {
+			subjectArea = subjectAreaRepository.findByNameIs(project.getSubjectArea().getName());
+			project.setSubjectArea(subjectArea);
+		}
 
-		Stage stage = stageRepository.findByStageNameIs(project.getIdStage().getStageName());
-		project.setIdStage(stage);
+		if (project.getIdOvertime() != null) {
+			overtime = overtimeRepository.findByOvertimeNameIs(project.getIdOvertime().getOvertimeName());
+			project.setIdOvertime(overtime);
 
-		Methodology methodology = methodologyRepository
-				.findByMethodologyNameIs(project.getIdMethodology().getMethodologyName());
-		project.setIdMethodology(methodology);
+		}
 
-		Type1 type1 = type1Repository.findByTypeIs(project.getIdType1().getType());
-		Type2 type2 = type2Repository.findByTypeIs(project.getIdType2().getType());
-		Type3 type3 = type3Repository.findByTypeIs(project.getIdType3().getType());
-		Type4 type4 = type4Repository.findByTypeIs(project.getIdType4().getType());
+		if (project.getIdStage() != null) {
+			stage = stageRepository.findByStageNameIs(project.getIdStage().getStageName());
+			project.setIdStage(stage);
+		} else {
+			if (project.getProjectStatus().getStatusValue().equals("Черновик")) {
+				project.setIdStage(new Stage());
+			} else {
+				throw new RuntimeException("Не заполнено поле \"Стадия проекта\"");
+			}
+		}
 
-		project.setIdType1(type1);
-		project.setIdType2(type2);
-		project.setIdType3(type3);
-		project.setIdType4(type4);
-		
+		if (project.getIdMethodology() != null) {
+			methodology = methodologyRepository
+					.findByMethodologyNameIs(project.getIdMethodology().getMethodologyName());
+			project.setIdMethodology(methodology);
+		}
+
+		if (project.getIdType1() != null) {
+			type1 = type1Repository.findByTypeIs(project.getIdType1().getType());
+			project.setIdType1(type1);
+		}
+
+		if (project.getIdType2() != null) {
+			type2 = type2Repository.findByTypeIs(project.getIdType2().getType());
+			project.setIdType2(type2);
+		}
+
+		if (project.getIdType3() != null) {
+			type3 = type3Repository.findByTypeIs(project.getIdType3().getType());
+			project.setIdType3(type3);
+		}
+
+		if (project.getIdType4() != null) {
+			type4 = type4Repository.findByTypeIs(project.getIdType4().getType());
+			project.setIdType4(type4);
+		}
+
 		project.setUser(projectRepository.findAll().stream().map(e -> e.getUser()).findFirst().get());
 
-		project.getMemberTeam1().setStaffList(staffListRepository.findStaffListByStaffNameIs("Аналитики"));
-		project.getMemberTeam2().setStaffList(staffListRepository.findStaffListByStaffNameIs("Front"));
-		project.getMemberTeam3().setStaffList(staffListRepository.findStaffListByStaffNameIs("Back"));
-		project.getMemberTeam4().setStaffList(staffListRepository.findStaffListByStaffNameIs("Fullstack"));
-		project.getMemberTeam5().setStaffList(staffListRepository.findStaffListByStaffNameIs("Тестировщики"));
-		project.getMemberTeam6().setStaffList(staffListRepository.findStaffListByStaffNameIs("Техписы"));
+		if (project.getMemberTeam1() != null) {
+			project.getMemberTeam1().setStaffList(staffListRepository.findStaffListByStaffNameIs("Аналитики"));
+		}
+
+		if (project.getMemberTeam2() != null) {
+			project.getMemberTeam2().setStaffList(staffListRepository.findStaffListByStaffNameIs("Front"));
+		}
+
+		if (project.getMemberTeam3() != null) {
+			project.getMemberTeam3().setStaffList(staffListRepository.findStaffListByStaffNameIs("Back"));
+		}
+
+		if (project.getMemberTeam4() != null) {
+			project.getMemberTeam4().setStaffList(staffListRepository.findStaffListByStaffNameIs("Fullstack"));
+		}
+
+		if (project.getMemberTeam5() != null) {
+			project.getMemberTeam5().setStaffList(staffListRepository.findStaffListByStaffNameIs("Тестировщики"));
+		}
+
+		if (project.getMemberTeam6() != null) {
+			project.getMemberTeam6().setStaffList(staffListRepository.findStaffListByStaffNameIs("Техписы"));
+		}
 
 		return projectRepository.save(project);
 	}
@@ -93,7 +156,13 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public Project openProjects(Long id) {
-		return projectRepository.findById(id).get();
+		Project project = null;
+		if (!projectRepository.findById(id).isEmpty()) {
+			project = projectRepository.findById(id).get();
+		} else {
+			throw new NoSuchElementException("Id не найден.");
+		}
+		return project;
 	}
 
 	// Словарь предметной области
@@ -104,68 +173,61 @@ public class ProjectServiceImpl implements ProjectService {
 				.forEach(o -> list.add(o.getName()));
 		return list;
 	}
-	
+
 	// Словари типов проекта
-	
+
 	public List<String> showType1() {
 		List<String> list = new ArrayList<>();
-		type1Repository.findAll().stream().sorted(Comparator.comparing(Type1::getType)).forEach(o -> list.add(o.getType()));
+		type1Repository.findAll().stream().sorted(Comparator.comparing(Type1::getType))
+				.forEach(o -> list.add(o.getType()));
 		return list;
 	}
 
 	public List<String> showType2() {
 		List<String> list = new ArrayList<>();
-		type2Repository.findAll().stream().sorted(Comparator.comparing(Type2::getType)).forEach(o -> list.add(o.getType()));
+		type2Repository.findAll().stream().sorted(Comparator.comparing(Type2::getType))
+				.forEach(o -> list.add(o.getType()));
 		return list;
 	}
+
 	public List<String> showType3() {
 		List<String> list = new ArrayList<>();
-		type3Repository.findAll().stream().sorted(Comparator.comparing(Type3::getType)).forEach(o -> list.add(o.getType()));
+		type3Repository.findAll().stream().sorted(Comparator.comparing(Type3::getType))
+				.forEach(o -> list.add(o.getType()));
 		return list;
 	}
+
 	public List<String> showType4() {
 		List<String> list = new ArrayList<>();
-		type4Repository.findAll().stream().sorted(Comparator.comparing(Type4::getType)).forEach(o -> list.add(o.getType()));
+		type4Repository.findAll().stream().sorted(Comparator.comparing(Type4::getType))
+				.forEach(o -> list.add(o.getType()));
 		return list;
 	}
-	
+
 	public List<String> showMethodologies() {
 		List<String> list = new ArrayList<>();
-		methodologyRepository.findAll().stream().sorted(Comparator.comparing(Methodology::getMethodologyName)).forEach(o -> list.add(o.getMethodologyName()));
+		methodologyRepository.findAll().stream().sorted(Comparator.comparing(Methodology::getMethodologyName))
+				.forEach(o -> list.add(o.getMethodologyName()));
 		return list;
 	}
-	
+
 	public List<String> showStage() {
 		List<String> list = new ArrayList<>();
 		stageRepository.findAll().stream().forEach(o -> list.add(o.getStageName()));
 		return list;
 	}
+
 	public List<String> showStatus() {
 		List<String> list = new ArrayList<>();
 		projectStatusRepository.findAll().forEach(o -> list.add(o.getStatusValue()));
 		return list;
 	}
+
 	public List<String> showOvertimes() {
 		List<String> list = new ArrayList<>();
-		overtimeRepository.findAll().stream().sorted(Comparator.comparing(Overtime::getOvertimeName)).forEach(o -> list.add(o.getOvertimeName()));
+		overtimeRepository.findAll().stream().sorted(Comparator.comparing(Overtime::getOvertimeName))
+				.forEach(o -> list.add(o.getOvertimeName()));
 		return list;
-	}
-	
-	// Проверка есть ли карточка в БД
-
-	public Project getProject(Long id) {
-		Project project = null;
-
-		try {
-			if (null != id && !projectRepository.findById(id).isEmpty()) {
-				project = projectRepository.findById(id).get();
-			} else {
-				throw new RuntimeException("Id не найден!");
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return project;
 	}
 
 	// Редактирование карточки
@@ -296,8 +358,11 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public void deleteProject(Long id) {
-
-		projectRepository.deleteById(id);
+		if (projectRepository.findAll().stream().anyMatch(e -> e.getId().equals(id))) {
+			projectRepository.deleteById(id);
+		} else {
+			throw new NoSuchElementException("Id не найден.");
+		}
 	}
 
 	@Autowired

@@ -1,6 +1,5 @@
 package ru.ibs.trainee.happyrecruter.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Component
@@ -20,6 +18,11 @@ public class SubjectArea {
     @GeneratedValue
     private Long id;
     private String name;
+    
+	public SubjectArea(String name) {
+		this.name = name;
+	}
+    
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -35,6 +38,7 @@ public class SubjectArea {
 	public int hashCode() {
 		return Objects.hash(id, name);
 	}
+
     
     
 

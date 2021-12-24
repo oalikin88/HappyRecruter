@@ -1,6 +1,5 @@
 package ru.ibs.trainee.happyrecruter.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Objects;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Component
 public class Type2 {
@@ -22,6 +20,10 @@ public class Type2 {
     private Long id;
     @Column(name = "type_value")
     private String type;
+    
+	public Type2(String type) {
+		this.type = type;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -39,5 +41,7 @@ public class Type2 {
 	public int hashCode() {
 		return Objects.hash(id, type);
 	}
+
+
 }
 

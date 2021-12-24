@@ -3,14 +3,12 @@ package ru.ibs.trainee.happyrecruter.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Component
@@ -22,7 +20,6 @@ public class MemberTeam {
 
     private float countNeeds;
     private float countHired;
-    @NotNull
     private LocalDate dateStartProject;
 
     @ManyToOne
@@ -30,23 +27,15 @@ public class MemberTeam {
     private StaffList staffList;
 
 
-
-    public MemberTeam(Long id, float countNeeds, float countHired, LocalDate dateStartProject) {
-        this.id = id;
-        this.countNeeds = countNeeds;
-        this.countHired = countHired;
-        this.dateStartProject = dateStartProject;        
-        
-        
-   }
+	public MemberTeam(float countNeeds, float countHired, LocalDate dateStartProject) {
+		this.countNeeds = countNeeds;
+		this.countHired = countHired;
+		this.dateStartProject = dateStartProject;
+		
+	}
         
 
         
-        
-  
-
-
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

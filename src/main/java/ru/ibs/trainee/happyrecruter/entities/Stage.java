@@ -1,8 +1,6 @@
 package ru.ibs.trainee.happyrecruter.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +8,6 @@ import javax.persistence.Id;
 import org.springframework.stereotype.Component;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Component
 public class Stage {
@@ -20,6 +16,15 @@ public class Stage {
     @GeneratedValue
     private Long id;
     private String stageName;
+    
+    public Stage(String stageName) {
+    	this.stageName = stageName;
+    }
+    
+    public Stage () {
+    	
+    }
+    
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
