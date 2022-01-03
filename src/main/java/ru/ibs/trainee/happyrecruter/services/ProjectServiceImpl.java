@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -123,7 +124,7 @@ public class ProjectServiceImpl implements ProjectService {
 			project.setIdType4(type4);
 		}
 
-		project.setUser(projectRepository.findAll().stream().map(e -> e.getUser()).findFirst().get());
+		project.setUser(projectRepository.findAll().stream().filter(e -> Objects.nonNull(e.getUser())).map(e -> e.getUser()).findFirst().get());
 
 		if (project.getMemberTeam1() != null) {
 			project.getMemberTeam1().setStaffList(staffListRepository.findStaffListByStaffNameIs("Аналитики"));
@@ -285,69 +286,73 @@ public class ProjectServiceImpl implements ProjectService {
 			editProject.setHasAnotherSpecialists(project.getHasAnotherSpecialists());
 		}
 
-		if (!project.getMemberTeam1().equals(editProject.getMemberTeam1())) {
+	
+		
+		if(project.getMemberTeam1() != null) {
 			editProject.getMemberTeam1().setCountHired(project.getMemberTeam1().getCountHired());
 			editProject.getMemberTeam1().setCountNeeds(project.getMemberTeam1().getCountNeeds());
 			editProject.getMemberTeam1().setDateStartProject(project.getMemberTeam1().getDateStartProject());
 		}
-		if (!project.getMemberTeam2().equals(editProject.getMemberTeam2())) {
+			
+		
+		if (project.getMemberTeam2() != null) {
 			editProject.getMemberTeam2().setCountHired(project.getMemberTeam2().getCountHired());
 			editProject.getMemberTeam2().setCountNeeds(project.getMemberTeam2().getCountNeeds());
 			editProject.getMemberTeam2().setDateStartProject(project.getMemberTeam2().getDateStartProject());
 		}
-		if (!project.getMemberTeam3().equals(editProject.getMemberTeam3())) {
+		if (project.getMemberTeam3() != null) {
 			editProject.getMemberTeam3().setCountHired(project.getMemberTeam3().getCountHired());
 			editProject.getMemberTeam3().setCountNeeds(project.getMemberTeam3().getCountNeeds());
 			editProject.getMemberTeam3().setDateStartProject(project.getMemberTeam3().getDateStartProject());
 		}
-		if (!project.getMemberTeam4().equals(editProject.getMemberTeam4())) {
+		if (project.getMemberTeam4() != null) {
 			editProject.getMemberTeam4().setCountHired(project.getMemberTeam4().getCountHired());
 			editProject.getMemberTeam4().setCountNeeds(project.getMemberTeam4().getCountNeeds());
 			editProject.getMemberTeam4().setDateStartProject(project.getMemberTeam4().getDateStartProject());
 		}
-		if (!project.getMemberTeam5().equals(editProject.getMemberTeam5())) {
+		if (project.getMemberTeam5() != null) {
 			editProject.getMemberTeam5().setCountHired(project.getMemberTeam5().getCountHired());
 			editProject.getMemberTeam5().setCountNeeds(project.getMemberTeam5().getCountNeeds());
 			editProject.getMemberTeam5().setDateStartProject(project.getMemberTeam5().getDateStartProject());
 		}
-		if (!project.getMemberTeam6().equals(editProject.getMemberTeam6())) {
+		if (project.getMemberTeam6() != null) {
 			editProject.getMemberTeam6().setCountHired(project.getMemberTeam6().getCountHired());
 			editProject.getMemberTeam6().setCountNeeds(project.getMemberTeam6().getCountNeeds());
 			editProject.getMemberTeam6().setDateStartProject(project.getMemberTeam6().getDateStartProject());
 		}
-		if (!project.getProjectStatus().equals(editProject.getProjectStatus())) {
+		if (project.getProjectStatus() != null) {
 			editProject.setProjectStatus(projectStatusRepository
 					.findProjectStatusByStatusValue(project.getProjectStatus().getStatusValue()));
 		}
 
-		if (!project.getSubjectArea().equals(editProject.getSubjectArea())) {
+		if (project.getSubjectArea() != null) {
 			editProject.setSubjectArea(subjectAreaRepository.findByNameIs(project.getSubjectArea().getName()));
 		}
 
-		if (!project.getIdOvertime().equals(editProject.getIdOvertime())) {
+		if (project.getIdOvertime() != null) {
 			editProject
 					.setIdOvertime(overtimeRepository.findByOvertimeNameIs(project.getIdOvertime().getOvertimeName()));
 		}
 
-		if (!project.getIdStage().equals(editProject.getIdStage())) {
+		if (project.getIdStage() != null) {
 			editProject.setIdStage(stageRepository.findByStageNameIs(project.getIdStage().getStageName()));
 		}
 
-		if (!project.getIdMethodology().equals(editProject.getIdMethodology())) {
+		if (project.getIdMethodology() != null) {
 			editProject.setIdMethodology(
 					methodologyRepository.findByMethodologyNameIs(project.getIdMethodology().getMethodologyName()));
 		}
 
-		if (!project.getIdType1().equals(editProject.getIdType1())) {
+		if (project.getIdType1() != null) {
 			editProject.setIdType1(type1Repository.findByTypeIs(project.getIdType1().getType()));
 		}
-		if (!project.getIdType2().equals(editProject.getIdType2())) {
+		if (project.getIdType2() != null) {
 			editProject.setIdType2(type2Repository.findByTypeIs(project.getIdType2().getType()));
 		}
-		if (!project.getIdType3().equals(editProject.getIdType3())) {
+		if (project.getIdType3() != null) {
 			editProject.setIdType3(type3Repository.findByTypeIs(project.getIdType3().getType()));
 		}
-		if (!project.getIdType4().equals(editProject.getIdType4())) {
+		if (project.getIdType4() != null) {
 			editProject.setIdType4(type4Repository.findByTypeIs(project.getIdType4().getType()));
 		}
 
@@ -380,22 +385,22 @@ public class ProjectServiceImpl implements ProjectService {
 		for (Project pr : list) {
 			projectDTOView = dtoViewMapper.projectToProjectDTOView(pr);
 			List<LocalDate> listDate = new ArrayList<>();
-			if (pr.getMemberTeam1().getDateStartProject() != null) {
+			if (pr.getMemberTeam1() != null && pr.getMemberTeam1().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam1().getDateStartProject());
 			}
-			if (pr.getMemberTeam2().getDateStartProject() != null) {
+			if (pr.getMemberTeam2() != null && pr.getMemberTeam2().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam2().getDateStartProject());
 			}
-			if (pr.getMemberTeam3().getDateStartProject() != null) {
+			if (pr.getMemberTeam3() != null && pr.getMemberTeam3().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam3().getDateStartProject());
 			}
-			if (pr.getMemberTeam4().getDateStartProject() != null) {
+			if (pr.getMemberTeam4() != null && pr.getMemberTeam4().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam4().getDateStartProject());
 			}
-			if (pr.getMemberTeam5().getDateStartProject() != null) {
+			if (pr.getMemberTeam5() != null && pr.getMemberTeam5().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam5().getDateStartProject());
 			}
-			if (pr.getMemberTeam6().getDateStartProject() != null) {
+			if (pr.getMemberTeam6() != null && pr.getMemberTeam6().getDateStartProject() != null) {
 				listDate.add(pr.getMemberTeam6().getDateStartProject());
 			}
 			if (!listDate.isEmpty()) {

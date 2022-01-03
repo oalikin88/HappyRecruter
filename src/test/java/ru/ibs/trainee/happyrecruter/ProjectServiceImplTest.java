@@ -93,6 +93,29 @@ class ProjectServiceImplTest {
 		
 	}
 	
+	@Test
+	void showSubjectsTest() {
+		List <String> list = new ArrayList<>();
+		list = projectService.showSubjects();
+
+		assertNotNull(list);
+	}
+	
+	@Test
+	void editProjectTest() {
+		projectRepository.save(project);
+		Long id = projectRepository.findAll().stream()
+				.filter(e -> e.getCompanyName().toLowerCase().contains("Test".toLowerCase())).findAny()
+				.map(e -> e.getId()).get();
+		
+		Project editProject = new Project(false, true, false, "Газпром-тест", "Тестовый проект", "Москва", "Функции", 
+				"Описание проекта", "Задачи",LocalDateTime.now(), LocalDate.now().plusMonths(1), 5, "Процедура", 
+				true, false, "Технологии", false, true, true, "нет", null, null, null, null, null, null, null, null, 
+				null, null, null, null, null, null, null, null);
+		
+		projectService.editProject(editProject, id);
+		assertEquals("Газпром-тест", projectRepository.findById(id).stream().map(e -> e.getCompanyName()).findFirst().get());
+	}
 
 	
 
@@ -105,6 +128,15 @@ class ProjectServiceImplTest {
 				.anyMatch(e -> e.getCompanyName().toLowerCase().contains("Test".toLowerCase()))) {
 			Long id = projectRepository.findAll().stream()
 					.filter(e -> e.getCompanyName().toLowerCase().contains("Test".toLowerCase())).findAny()
+					.map(e -> e.getId()).get();
+			projectRepository.deleteById(id);
+			System.out.println("AfterEach: Project " + project.getProjectName() + " was deleted.");
+		}
+		
+		if (projectRepository.findAll().stream()
+				.anyMatch(e -> e.getCompanyName().toLowerCase().contains("Газпром-тест".toLowerCase()))) {
+			Long id = projectRepository.findAll().stream()
+					.filter(e -> e.getCompanyName().toLowerCase().contains("Газпром-тест".toLowerCase())).findAny()
 					.map(e -> e.getId()).get();
 			projectRepository.deleteById(id);
 			System.out.println("AfterEach: Project " + project.getProjectName() + " was deleted.");

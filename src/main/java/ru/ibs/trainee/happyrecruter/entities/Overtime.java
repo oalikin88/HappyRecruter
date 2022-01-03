@@ -8,8 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-@NoArgsConstructor
-@Data
+
 public class Overtime {
 
     @Id
@@ -21,6 +20,40 @@ public class Overtime {
 		this.overtimeName = overtimeName;
 	}
     
+	
+	
+	public Overtime() {
+		super();
+	}
+	
+	
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
+	public String getOvertimeName() {
+		return overtimeName;
+	}
+
+
+
+	public void setOvertimeName(String overtimeName) {
+		this.overtimeName = overtimeName;
+	}
+
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

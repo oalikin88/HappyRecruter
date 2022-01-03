@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@NoArgsConstructor
-@Data
 @Component
 public class MemberTeam {
     @Id
@@ -33,9 +31,64 @@ public class MemberTeam {
 		this.dateStartProject = dateStartProject;
 		
 	}
-        
+	
+	  
+	public MemberTeam() {
+		super();
+	}
 
-        
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public float getCountNeeds() {
+		return countNeeds;
+	}
+
+
+	public void setCountNeeds(float countNeeds) {
+		this.countNeeds = countNeeds;
+	}
+
+
+	public float getCountHired() {
+		return countHired;
+	}
+
+
+	public void setCountHired(float countHired) {
+		this.countHired = countHired;
+	}
+
+
+	public LocalDate getDateStartProject() {
+		return dateStartProject;
+	}
+
+
+	public void setDateStartProject(LocalDate dateStartProject) {
+		this.dateStartProject = dateStartProject;
+	}
+
+
+	public StaffList getStaffList() {
+		return staffList;
+	}
+
+
+	public void setStaffList(StaffList staffList) {
+		this.staffList = staffList;
+	}
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

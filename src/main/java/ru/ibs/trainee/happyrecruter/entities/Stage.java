@@ -4,16 +4,16 @@ import lombok.Data;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Data
 @Component
 public class Stage {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String stageName;
     
@@ -25,6 +25,24 @@ public class Stage {
     	
     }
     
+    
+    
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getStageName() {
+		return stageName;
+	}
+
+	public void setStageName(String stageName) {
+		this.stageName = stageName;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

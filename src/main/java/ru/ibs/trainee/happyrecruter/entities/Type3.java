@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Data
 @NoArgsConstructor
 @Component
 public class Type3 {
@@ -25,6 +24,8 @@ public class Type3 {
 		this.type = type;
 	}
 
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -40,6 +41,30 @@ public class Type3 {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, type);
+	}
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
+	public String getType() {
+		return type;
+	}
+
+
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 

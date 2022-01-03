@@ -10,9 +10,6 @@ import javax.persistence.Id;
 
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
 public class ProjectStatus {
 
     @Id
@@ -37,16 +34,43 @@ public class ProjectStatus {
 		ProjectStatus other = (ProjectStatus) obj;
 		return Objects.equals(id, other.id) && Objects.equals(statusValue, other.statusValue);
 	}
+	
+
+	public ProjectStatus() {
+		
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getStatusValue() {
+		return statusValue;
+	}
+
+
+	public void setStatusValue(String statusValue) {
+		this.statusValue = statusValue;
+	}
+
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, statusValue);
 	}
+
+
 	@Override
 	public String toString() {
-		return "ProjectStatus [id=" + id + ", statusValue=" + statusValue + ", hashCode()=" + hashCode() + ", getId()="
-				+ getId() + ", getStatusValue()=" + getStatusValue() + ", getClass()=" + getClass() + ", toString()="
-				+ super.toString() + "]";
+		return "ProjectStatus [id=" + id + ", statusValue=" + statusValue + "]";
 	}
+	
 
 
 

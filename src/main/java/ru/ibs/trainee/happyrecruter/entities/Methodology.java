@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import org.springframework.stereotype.Component;
 
 @Entity
-@NoArgsConstructor
-@Data
 @Component
 public class Methodology {
 
@@ -22,7 +20,31 @@ public class Methodology {
 	public Methodology(String methodologyName) {
 		this.methodologyName = methodologyName;
 	}
-    
+	
+	public Methodology() {
+		super();
+	}
+
+	
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getMethodologyName() {
+		return methodologyName;
+	}
+
+	public void setMethodologyName(String methodologyName) {
+		this.methodologyName = methodologyName;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -39,6 +61,7 @@ public class Methodology {
 		return Objects.hash(id, methodologyName);
 	}
 
+	
     
     
 }

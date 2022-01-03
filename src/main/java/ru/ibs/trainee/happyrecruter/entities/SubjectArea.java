@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 @Entity
-@NoArgsConstructor
-@Data
 @Component
 public class SubjectArea {
 
@@ -38,6 +36,28 @@ public class SubjectArea {
 	public int hashCode() {
 		return Objects.hash(id, name);
 	}
+
+	public SubjectArea() {
+		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 
     
     

@@ -9,9 +9,9 @@
 			"read-only": false,
 			"configuration": {
 				"host": "localhost",
-				"port": "5434",
+				"port": "5432",
 				"database": "happydb",
-				"url": "jdbc:postgresql://localhost:5434/happydb",
+				"url": "jdbc:postgresql://localhost:5432/happydb",
 				"home": "postgresql-x64-9.5",
 				"type": "dev",
 				"provider-properties": {
@@ -24,7 +24,8 @@
 					"postgresql.dd.plain.string": "false",
 					"postgresql.dd.tag.string": "false"
 				},
-				"auth-model": "native"
+				"auth-model": "native",
+				"handlers": {}
 			}
 		}
 	},
