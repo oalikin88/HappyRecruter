@@ -93,13 +93,6 @@ class ProjectServiceImplTest {
 		
 	}
 	
-	@Test
-	void showSubjectsTest() {
-		List <String> list = new ArrayList<>();
-		list = projectService.showSubjects();
-
-		assertNotNull(list);
-	}
 	
 	@Test
 	void editProjectTest() {
@@ -115,6 +108,49 @@ class ProjectServiceImplTest {
 		
 		projectService.editProject(editProject, id);
 		assertEquals("Газпром-тест", projectRepository.findById(id).stream().map(e -> e.getCompanyName()).findFirst().get());
+	}
+	
+	@Test
+	void showSubjectsTest() {
+		List <String> list = new ArrayList<>();
+		list = projectService.showSubjects();
+
+		assertNotNull(list);
+	}
+	
+	@Test 
+	void showType1Test() {
+		List<String> list = new ArrayList<>();
+		list = projectService.showType1();
+		assertNotNull(list);
+	}
+	
+	@Test
+	void showMethodologiesTest() {
+		List<String> list = new ArrayList<>();
+		list = projectService.showMethodologies();
+		assertNotNull(list);
+	}
+	
+	@Test
+	void showStageTest() {
+		List<String> list = new ArrayList<>();
+		list = projectService.showStage();
+		assertNotNull(list);
+	}
+	
+	@Test
+	void showStatusTest() {
+		List<String> list = new ArrayList<>();
+		list = projectService.showStatus();
+		assertNotNull(list);
+	}
+	
+	@Test
+	void showOvertimesTest() {
+		List<String> list = new ArrayList<>();
+		list = projectService.showOvertimes();
+		assertNotNull(list);
 	}
 
 	

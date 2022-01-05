@@ -16,7 +16,7 @@ public class Project {
 
   
 	@Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private boolean isDraft;
     private boolean isInWorked;
