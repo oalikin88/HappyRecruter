@@ -14,7 +14,8 @@ public class ProjectDTOViewMapper {
 		mapper.addMappings(new PropertyMap<Project, ProjectDTOView>() {
 			@Override
 			protected void configure() {
-				map().setFio(source.getUser().getFio());
+				map().setFirstName(source.getUser().getFirstName());
+				map().setLastName(source.getUser().getLastName());
 				
 			}
 		});

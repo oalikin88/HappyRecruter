@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTO;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
@@ -32,6 +33,7 @@ public class ProjectController {
 
 	@Tag(name = "Создание проекта", description = "Детальное описание будет позже")
 	@PostMapping("create")
+	@PreAuthorize("hasAuthority('card:write')")
 	public ResponseEntity<ProjectDTOedit> create(@RequestBody ProjectDTOedit dto) {
 		project = mapper.fromProjectDTOeditToProject(dto);
 		projectService.createProject(project);
@@ -86,6 +88,7 @@ public class ProjectController {
 
 	@Tag(name = "Просмотр карточки", description = "Детальное описание будет позже")
 	@GetMapping(value = "view/{id}")
+	@PreAuthorize("hasAuthority('card:read')")
 	public ProjectDTO show(@PathVariable(name = "id") Long id) {
 		project = projectService.openProjects(id);
 		dto = mapper.toProjectDTO(project);
@@ -102,6 +105,7 @@ public class ProjectController {
 
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
 	@RequestMapping(value = "view/edit", method = RequestMethod.PUT, headers = "Accept=*/*")
+	@PreAuthorize("hasAuthority('card:write')")
 	public ResponseEntity<String> edit(@RequestParam(required = false) Long id, @RequestBody ProjectDTOedit dto) {
 		project = mapper.fromProjectDTOeditToProject(dto);
 	//	projectService.getProject(id);
@@ -110,10 +114,10 @@ public class ProjectController {
 	}
 
 	@Tag(name = "Удаление карточки", description = "Детальное описание будет позже")
-	@PostMapping(value = "view/delete")
-	public ResponseEntity<String> delete(@RequestParam(required = true) Long id) {
-	//	project = projectService.getProject(id);
-		projectService.deleteProject(project.getId());
+	@DeleteMapping(value = "view/delete/{id}")
+	@PreAuthorize("hasAuthority('card:write')")
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		projectService.deleteProject(id);
 		return new ResponseEntity<String>("Карточка удалена", HttpStatus.OK);
 	}
 
@@ -127,6 +131,7 @@ public class ProjectController {
 
 	@ResponseBody
 	@RequestMapping("view/registry")
+	@PreAuthorize("hasAuthority('card:read')")
 	public List<ProjectDTOView> viewRegistryCards(@RequestParam(value = "sort", required = false) String sort,
 			@RequestParam(required = false) String companyNameFilter,
 			@RequestParam(required = false) String statusProjectFilter,

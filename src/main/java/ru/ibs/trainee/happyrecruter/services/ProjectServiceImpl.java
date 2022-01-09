@@ -421,7 +421,7 @@ public class ProjectServiceImpl implements ProjectService {
 		return showRegistryCards().stream()
 				.filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
 				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.filter(t -> t.getLastName().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 
@@ -521,7 +521,7 @@ public class ProjectServiceImpl implements ProjectService {
 			String authorCardFilter) {
 		return showRegistryCards().stream()
 				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.filter(t -> t.getLastName().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 
@@ -603,7 +603,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	public List<ProjectDTOView> projectDTOViewFilterByAuthor(String authorCardFilter) {
 		return showRegistryCards().stream()
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.filter(t -> t.getLastName().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 
@@ -676,7 +676,7 @@ public class ProjectServiceImpl implements ProjectService {
 			String authorCardFilter) {
 		return showRegistryCards().stream()
 				.filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.filter(t -> t.getLastName().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 

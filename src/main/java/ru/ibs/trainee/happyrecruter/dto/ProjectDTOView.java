@@ -25,27 +25,13 @@ public class ProjectDTOView {
 	private String statusValue;
 	@JsonProperty("isDelegated")
 	private boolean isDelegated;
-	@JsonProperty("fio")
-	private String fio;
+	@JsonProperty("first_name")
+	private String firstName;
+	@JsonProperty("last_name")
+	private String lastName;
 	@JsonProperty("dateStartProject")
 	@JsonDeserialize
 	private LocalDate dateStartProject;
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ProjectDTOView other = (ProjectDTOView) obj;
-		return Objects.equals(companyName, other.companyName)
-				&& Objects.equals(dateStartProject, other.dateStartProject)
-				&& Objects.equals(dateTimeCreate, other.dateTimeCreate) && Objects.equals(id, other.id)
-				&& isDelegated == other.isDelegated && Objects.equals(projectName, other.projectName)
-				&& Objects.equals(statusValue, other.statusValue);
-	}
 
 	
 	
@@ -121,14 +107,27 @@ public class ProjectDTOView {
 
 
 
-	public String getFio() {
-		return fio;
+
+	public String getFirstName() {
+		return firstName;
 	}
 
 
 
-	public void setFio(String fio) {
-		this.fio = fio;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	public String getLastName() {
+		return lastName;
+	}
+
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 
@@ -144,33 +143,24 @@ public class ProjectDTOView {
 	}
 
 
-
-	
-	
 	public ProjectDTOView(Long id, String companyName, LocalDateTime dateTimeCreate, String projectName,
-			String statusValue, boolean isDelegated, String fio, LocalDate dateStartProject) {
+			String statusValue, boolean isDelegated, String firstName, String lastName, LocalDate dateStartProject) {
 		this.id = id;
 		this.companyName = companyName;
 		this.dateTimeCreate = dateTimeCreate;
 		this.projectName = projectName;
 		this.statusValue = statusValue;
 		this.isDelegated = isDelegated;
-		this.fio = fio;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.dateStartProject = dateStartProject;
 	}
 
-	
+
 
 	public ProjectDTOView() {
-		super();
 	}
 
-
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(companyName, dateStartProject, dateTimeCreate, id, isDelegated, projectName, statusValue);
-	}
 
 	@Override
 	public String toString() {
@@ -178,5 +168,34 @@ public class ProjectDTOView {
 				+ ", projectName=" + projectName + ", statusValue=" + statusValue + ", isDelegated=" + isDelegated
 				+ ", dateStartProject=" + dateStartProject + "]";
 	}
+
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(companyName, dateStartProject, dateTimeCreate, firstName, id, isDelegated, lastName,
+				projectName, statusValue);
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProjectDTOView other = (ProjectDTOView) obj;
+		return Objects.equals(companyName, other.companyName)
+				&& Objects.equals(dateStartProject, other.dateStartProject)
+				&& Objects.equals(dateTimeCreate, other.dateTimeCreate) && Objects.equals(firstName, other.firstName)
+				&& Objects.equals(id, other.id) && isDelegated == other.isDelegated
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(projectName, other.projectName)
+				&& Objects.equals(statusValue, other.statusValue);
+	}
+	
+	
 
 }

@@ -1,23 +1,26 @@
 CREATE TABLE public.users (
-		id INT8 NOT NULL PRIMARY KEY,
-		fio VARCHAR(255),
-		username VARCHAR(255),
-		password VARCHAR(255)
+		id serial NOT NULL PRIMARY KEY,
+		email VARCHAR(255) unique not null,
+		first_name VARCHAR(50) NOT NULL,
+		last_name VARCHAR(100) NOT NULL,
+		password VARCHAR(255) NOT null,
+		role VARCHAR(20) default 'USER' not null,
+		status VARCHAR(20) default 'ACTIVE' not null
 	);
 CREATE TABLE public.stage (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		stagename VARCHAR(255)
 	);
 	
 
 CREATE TABLE public.projectstatus (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		statusvalue VARCHAR(255)
 	);
 	
 
 CREATE TABLE public.type3 (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		type_value VARCHAR(255)
 	);
 	
@@ -26,13 +29,13 @@ CREATE TABLE public.type3 (
 	
 
 CREATE TABLE public.subjectarea (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		name VARCHAR(255)
 	);
 	
 
 CREATE TABLE public.memberteam (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		counthired FLOAT4 NOT NULL,
 		countneeds FLOAT4 NOT NULL,
 		datestartproject DATE,
@@ -41,53 +44,46 @@ CREATE TABLE public.memberteam (
 	
 
 CREATE TABLE public.overtime (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		overtimename VARCHAR(255)
 	);
 	
 
 CREATE TABLE public.type1 (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		type_value VARCHAR(255)
 	);
 	
 
 CREATE TABLE public.methodology (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		methodologyname VARCHAR(255)
 	);
 	
 
 CREATE TABLE public.type2 (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		type_value VARCHAR(255)
 	);
 	
 
-CREATE TABLE public.roles (
-		id INT8 NOT NULL PRIMARY KEY,
-		name VARCHAR(255)
-	);
 	
 
 CREATE TABLE public.type4 (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		type_value VARCHAR(255)
 	);
 	
 
 CREATE TABLE public.stafflist (
-		id INT8 NOT NULL PRIMARY KEY,
+		id serial NOT NULL PRIMARY KEY,
 		staffname VARCHAR(255)
 	);
 
-CREATE TABLE public.users_roles (
-		user_id INT8 NOT NULL,
-		role_id INT8 NOT NULL
-	);
+
 	CREATE TABLE public.project (
-		id INT8 NOT NULL PRIMARY KEY,
-		companyname VARCHAR(255),
+		id serial NOT NULL PRIMARY KEY,
+		companyname VARCHAR(100),
 		datecloseproject DATE,
 		datetimecreate TIMESTAMP,
 		description VARCHAR(255),
@@ -163,11 +159,6 @@ ALTER TABLE public.project ADD FOREIGN KEY
 (subjectarea_id) REFERENCES public.subjectarea;
 
 
-ALTER TABLE public.users_roles ADD FOREIGN KEY
-(user_id) REFERENCES public.users;
-ALTER TABLE public.users_roles ADD FOREIGN KEY
-(role_id) REFERENCES public.roles;
-
 ALTER TABLE public.memberteam ADD FOREIGN KEY
 (id_staff) REFERENCES public.stafflist;
 
@@ -228,15 +219,12 @@ insert into type4 (id, type_value) values
 (34, 'Новая система'),
 (35, 'Модернизация системы');
 
-insert into users (id, fio, username, password) values
-(36, 'Иванов Иван Иванович', 'ivanov@mail.ru', 'qwerty'),
-(37, 'Петров Петр Петрович', 'petrov@mail.ru', '12345'),
-(38, 'Кондратов Кондрат Кондратович', 'kondrat@mail.ru', 'poiuy');
+insert into users (id, email, first_name, last_name, password, role, status) values
+(36, 'admin@mail.ru', 'John', 'Doe', '$2a$12$7SXuRKLNIGDDayDwFFtbUe2idhVI2aadRiQLf36jSY8VnDe9924sK', 'ADMIN', 'ACTIVE'),
+(37, 'user@mail.ru', 'Иван', 'Иванов', '$2a$12$ErKoNKsUKZ6hOVaX/hMQMeoR9fH0OaNycVIqhBJvII8W9LUKij96G', 'USER', 'ACTIVE'),
+(38, 'kondrat@mail.ru', 'Кондрат', 'Кондратов', '$2a$12$VJGIovw2DD0my7886WHQoOsbF6MOjGPvMJppBijq/GBxZmQ1UzypW', 'USER', 'ACTIVE');
 
-insert into roles (id, name) values
-(39, 'ADMIN'),
-(40, 'MANAGER'),
-(41, 'GUEST');
+
 
 
 
