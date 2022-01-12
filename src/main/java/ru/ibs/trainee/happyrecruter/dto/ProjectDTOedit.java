@@ -60,5 +60,6 @@ public class ProjectDTOedit {
     private float countNeeds6;
     private float countHired6;
     private LocalDate dateStartProject6;
+    private String email;
 	
 }

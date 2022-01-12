@@ -1,89 +1,50 @@
 package ru.ibs.trainee.happyrecruter.entities;
 
 import javax.persistence.*;
-
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.ibs.trainee.happyrecruter.model.Role;
+import ru.ibs.trainee.happyrecruter.model.Status;
 
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@Data
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
-    private String username;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "password")
     private String password;
-    private String fio;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "status")
+    private Status status;
     
-
-
-	public User(String username, String password, String fio, Set<Role> roles) {
-		this.username = username;
+    
+	public User(String firstName, String lastName, String email, String password, Role role, Status status) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
 		this.password = password;
-		this.fio = fio;
-		this.roles = roles;
+		this.role = role;
+		this.status = status;
 	}
-
-	public void addRole(Role role) {
-        roles.add(role);
-        role.getUsers().add(this);
-    }
-
-    public void removeRole(Role role) {
-        roles.remove(role);
-        role.getUsers().remove(this);
-    }
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFio() {
-		return fio;
-	}
-
-	public void setFio(String fio) {
-		this.fio = fio;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+    
+    
+    
+    
 
  
 }

@@ -42,6 +42,8 @@ public class ProjectServiceImpl implements ProjectService {
 	ProjectStatusRepository projectStatusRepository;
 	@Autowired
 	MemberTeamRepository memberTeamRepository;
+	@Autowired
+	UserRepository userRepository;
 
 	// Создание карточки
 
@@ -123,7 +125,7 @@ public class ProjectServiceImpl implements ProjectService {
 			project.setIdType4(type4);
 		}
 
-		project.setUser(projectRepository.findAll().stream().map(e -> e.getUser()).findFirst().get());
+		project.setUser(userRepository.findByEmail(projectIn.getUser().getEmail()).get());
 
 		if (project.getMemberTeam1() != null) {
 			project.getMemberTeam1().setStaffList(staffListRepository.findStaffListByStaffNameIs("Аналитики"));
@@ -416,7 +418,7 @@ public class ProjectServiceImpl implements ProjectService {
 		return showRegistryCards().stream()
 				.filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
 				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.filter(t -> t.getLastName().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 
@@ -516,7 +518,7 @@ public class ProjectServiceImpl implements ProjectService {
 			String authorCardFilter) {
 		return showRegistryCards().stream()
 				.filter(t -> t.getStatusValue().toLowerCase().contains(statusProjectFilter.toLowerCase()))
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.filter(t -> t.getLastName().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 
@@ -598,7 +600,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	public List<ProjectDTOView> projectDTOViewFilterByAuthor(String authorCardFilter) {
 		return showRegistryCards().stream()
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.filter(t -> t.getLastName().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 
@@ -671,7 +673,7 @@ public class ProjectServiceImpl implements ProjectService {
 			String authorCardFilter) {
 		return showRegistryCards().stream()
 				.filter(t -> t.getCompanyName().toLowerCase().contains(companyNameFilter.toLowerCase()))
-				.filter(t -> t.getFio().toLowerCase().contains(authorCardFilter.toLowerCase()))
+				.filter(t -> t.getLastName().toLowerCase().contains(authorCardFilter.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 

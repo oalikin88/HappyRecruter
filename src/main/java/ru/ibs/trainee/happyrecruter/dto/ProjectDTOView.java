@@ -28,8 +28,10 @@ public class ProjectDTOView {
 	private String statusValue;
 	@JsonProperty("isDelegated")
 	private boolean isDelegated;
-	@JsonProperty("fio")
-	private String fio;
+	@JsonProperty("firstName")
+	private String firstName;
+	@JsonProperty("lastName")
+	private String lastName;
 	@JsonProperty("dateStartProject")
 	@JsonDeserialize
 	private LocalDate dateStartProject;

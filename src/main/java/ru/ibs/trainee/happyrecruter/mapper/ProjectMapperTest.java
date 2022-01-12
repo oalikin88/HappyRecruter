@@ -79,6 +79,7 @@ public class ProjectMapperTest {
 				map().getMemberTeam5().setDateStartProject(source.getDateStartProject5());
 				map().getMemberTeam6().setDateStartProject(source.getDateStartProject6());
 				map().getProjectStatus().setStatusValue(source.getProjectStatus());
+				map().getUser().setEmail(source.getEmail());
 				
 			}
 		});

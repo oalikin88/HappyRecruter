@@ -1,9 +1,14 @@
 CREATE TABLE public.users (
-		id INT8 NOT NULL PRIMARY KEY,
-		fio VARCHAR(255),
-		username VARCHAR(255),
-		password VARCHAR(255)
+		id SERIAL PRIMARY KEY,
+		first_name VARCHAR(50) NOT NULL,
+		last_name VARCHAR(100) NOT NULL,
+		email VARCHAR(255) UNIQUE NOT NULL,
+		password VARCHAR(255) NOT NULL,
+		role VARCHAR(20) DEFAULT 'USER' NOT NULL,
+		status VARCHAR(20) DEFAULT 'ACTIVE' NOT NULL
 	);
+	
+	
 CREATE TABLE public.stage (
 		id INT8 NOT NULL PRIMARY KEY,
 		stagename VARCHAR(255)
@@ -63,11 +68,6 @@ CREATE TABLE public.type2 (
 		type_value VARCHAR(255)
 	);
 	
-
-CREATE TABLE public.roles (
-		id INT8 NOT NULL PRIMARY KEY,
-		name VARCHAR(255)
-	);
 	
 
 CREATE TABLE public.type4 (
@@ -81,10 +81,7 @@ CREATE TABLE public.stafflist (
 		staffname VARCHAR(255)
 	);
 
-CREATE TABLE public.users_roles (
-		user_id INT8 NOT NULL,
-		role_id INT8 NOT NULL
-	);
+
 	CREATE TABLE public.project (
 		id INT8 NOT NULL PRIMARY KEY,
 		companyname VARCHAR(255),
@@ -162,12 +159,6 @@ ALTER TABLE public.project ADD FOREIGN KEY
 ALTER TABLE public.project ADD FOREIGN KEY
 (subjectarea_id) REFERENCES public.subjectarea;
 
-
-ALTER TABLE public.users_roles ADD FOREIGN KEY
-(user_id) REFERENCES public.users;
-ALTER TABLE public.users_roles ADD FOREIGN KEY
-(role_id) REFERENCES public.roles;
-
 ALTER TABLE public.memberteam ADD FOREIGN KEY
 (id_staff) REFERENCES public.stafflist;
 
@@ -228,16 +219,10 @@ insert into type4 (id, type_value) values
 (34, 'Новая система'),
 (35, 'Модернизация системы');
 
-insert into users (id, fio, username, password) values
-(36, 'Иванов Иван Иванович', 'ivanov@mail.ru', 'qwerty'),
-(37, 'Петров Петр Петрович', 'petrov@mail.ru', '12345'),
-(38, 'Кондратов Кондрат Кондратович', 'kondrat@mail.ru', 'poiuy');
-
-insert into roles (id, name) values
-(39, 'ADMIN'),
-(40, 'MANAGER'),
-(41, 'GUEST');
-
+insert into users (id, first_name, last_name, email, password, role, status) values
+(36, 'Иван', 'Иванов', 'ivanov@mail.ru', '$2a$12$uhiXtt73vhTqmarkHxqbfOUR8szIlg9kcD6ZUNNLrgrHrr9/LmYc2', 'ADMIN', 'ACTIVE'),
+(37, 'Петр', 'Петров', 'petrov@mail.ru', '$2a$12$.zU5FevEu5N5BO9T.9O9OeGRAtS.ury6Zx7TrNR23asuKOme4tpqC', 'ADMIN', 'BANNED'),
+(38, 'Кондрат', 'Кондратов', 'kondrat@mail.ru', '$2a$12$U7hpZdnDgJTzMJPc5oKUfeJbt/c55/J6.zgdc.WSUgg95dI8RfUDO', 'USER', 'ACTIVE');
 
 
 INSERT INTO public.memberteam (id, counthired, countneeds, datestartproject, id_staff)

@@ -2,9 +2,19 @@ package ru.ibs.trainee.happyrecruter.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTO;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
@@ -12,6 +22,8 @@ import ru.ibs.trainee.happyrecruter.dto.ProjectDTOedit;
 import ru.ibs.trainee.happyrecruter.entities.*;
 import ru.ibs.trainee.happyrecruter.mapper.ProjectMapperTest;
 import ru.ibs.trainee.happyrecruter.repositories.SubjectAreaRepository;
+import ru.ibs.trainee.happyrecruter.repositories.UserRepository;
+import ru.ibs.trainee.happyrecruter.security.UserDetailsServiceImpl;
 import ru.ibs.trainee.happyrecruter.services.ProjectService;
 
 @RestController
@@ -28,11 +40,15 @@ public class ProjectController {
 	Project project;
 	@Autowired
 	ProjectDTO dto;
-	SubjectAreaRepository subjectAreaRepository;
+	
+	
 
 	@Tag(name = "Создание проекта", description = "Детальное описание будет позже")
+	@PreAuthorize("hasAuthority('card:write')")
 	@PostMapping("create")
-	public ResponseEntity<ProjectDTOedit> create(@RequestBody ProjectDTOedit dto) {
+	public ResponseEntity<ProjectDTOedit> create(@RequestBody ProjectDTOedit dto, HttpServletRequest request) {
+		String email = request.getUserPrincipal().getName();
+		dto.setEmail(email);
 		project = mapper.fromProjectDTOeditToProject(dto);
 		projectService.createProject(project);
 		return new ResponseEntity<ProjectDTOedit>(dto, HttpStatus.OK);
@@ -85,6 +101,7 @@ public class ProjectController {
 	}
 
 	@Tag(name = "Просмотр карточки", description = "Детальное описание будет позже")
+	@PreAuthorize("hasAuthority('card:read')")
 	@GetMapping(value = "view/{id}")
 	public ProjectDTO show(@PathVariable(name = "id") Long id) {
 		project = projectService.openProjects(id);
@@ -101,6 +118,7 @@ public class ProjectController {
 
 
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
+	@PreAuthorize("hasAuthority('card:write')")
 	@RequestMapping(value = "view/edit", method = RequestMethod.PUT, headers = "Accept=*/*")
 	public ResponseEntity<String> edit(@RequestParam(required = false) Long id, @RequestBody ProjectDTOedit dto) {
 		project = mapper.fromProjectDTOeditToProject(dto);
@@ -110,6 +128,7 @@ public class ProjectController {
 	}
 
 	@Tag(name = "Удаление карточки", description = "Детальное описание будет позже")
+	@PreAuthorize("hasAuthority('card:write')")
 	@PostMapping(value = "view/delete")
 	public ResponseEntity<String> delete(@RequestParam(required = true) Long id) {
 	//	project = projectService.getProject(id);
@@ -124,7 +143,7 @@ public class ProjectController {
 			+ " 'delegate' - сортировка по делегированию; 'delegateReversed' - сортировка в обратном порядке"
 			+ " 'companyName' - сортировка по заказчику; 'companyNameReversed' - сортировка в обратном порядке;"
 			+ " Фильтр по автору пока не работает;")
-
+	@PreAuthorize("hasAuthority('card:read')")
 	@ResponseBody
 	@RequestMapping("view/registry")
 	public List<ProjectDTOView> viewRegistryCards(@RequestParam(value = "sort", required = false) String sort,
