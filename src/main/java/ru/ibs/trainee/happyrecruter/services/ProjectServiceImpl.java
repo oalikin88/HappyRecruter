@@ -125,8 +125,10 @@ public class ProjectServiceImpl implements ProjectService {
 			project.setIdType4(type4);
 		}
 
+		if(project.getUser() != null) {
 		project.setUser(userRepository.findByEmail(projectIn.getUser().getEmail()).get());
-
+		}
+		
 		if (project.getMemberTeam1() != null) {
 			project.getMemberTeam1().setStaffList(staffListRepository.findStaffListByStaffNameIs("Аналитики"));
 		}
@@ -238,6 +240,8 @@ public class ProjectServiceImpl implements ProjectService {
 	public Project editProject(Project project, Long id) {
 
 		Project editProject = projectRepository.findById(id).get();
+		
+		
 		if (!project.getCompanyName().equals(editProject.getCompanyName())) {
 			editProject.setCompanyName(project.getCompanyName());
 		}

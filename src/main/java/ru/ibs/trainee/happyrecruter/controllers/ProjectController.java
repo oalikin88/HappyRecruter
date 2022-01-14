@@ -2,28 +2,17 @@ package ru.ibs.trainee.happyrecruter.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTO;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOView;
 import ru.ibs.trainee.happyrecruter.dto.ProjectDTOedit;
 import ru.ibs.trainee.happyrecruter.entities.*;
 import ru.ibs.trainee.happyrecruter.mapper.ProjectMapperTest;
-import ru.ibs.trainee.happyrecruter.repositories.SubjectAreaRepository;
-import ru.ibs.trainee.happyrecruter.repositories.UserRepository;
-import ru.ibs.trainee.happyrecruter.security.UserDetailsServiceImpl;
 import ru.ibs.trainee.happyrecruter.services.ProjectService;
 
 @RestController
@@ -51,7 +40,7 @@ public class ProjectController {
 		dto.setEmail(email);
 		project = mapper.fromProjectDTOeditToProject(dto);
 		projectService.createProject(project);
-		return new ResponseEntity<ProjectDTOedit>(dto, HttpStatus.OK);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 
 	}
 
@@ -119,21 +108,19 @@ public class ProjectController {
 
 	@Tag(name = "Редактирование карточки", description = "Детальное описание будет позже")
 	@PreAuthorize("hasAuthority('card:write')")
-	@RequestMapping(value = "view/edit", method = RequestMethod.PUT, headers = "Accept=*/*")
+	@PutMapping("view/edit")
 	public ResponseEntity<String> edit(@RequestParam(required = false) Long id, @RequestBody ProjectDTOedit dto) {
 		project = mapper.fromProjectDTOeditToProject(dto);
-	//	projectService.getProject(id);
 		projectService.editProject(project, id);
-		return new ResponseEntity<String>("Карточка отредактирована ", HttpStatus.OK);
+		return new ResponseEntity<>("Карточка отредактирована ", HttpStatus.OK);
 	}
 
 	@Tag(name = "Удаление карточки", description = "Детальное описание будет позже")
 	@PreAuthorize("hasAuthority('card:write')")
 	@PostMapping(value = "view/delete")
 	public ResponseEntity<String> delete(@RequestParam(required = true) Long id) {
-	//	project = projectService.getProject(id);
 		projectService.deleteProject(project.getId());
-		return new ResponseEntity<String>("Карточка удалена", HttpStatus.OK);
+		return new ResponseEntity<>("Карточка удалена", HttpStatus.OK);
 	}
 
 	@Tag(name = "Реестр карточек", description = "Реестр карточек - просто get; 'projectName' - сортировка по наименованию проекта; 'projectNameReversed' - сортировка в обратном порядке"
